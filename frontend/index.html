@@ -1,174 +1,173 @@
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
-  <title>MyLibrary</title>
+  <title>MyLibrary</title>
 
-  <!-- CSP: дозволяємо картинки з https і data:, запити на бек і https,
-       стилі з інлайном (бо в HTML є style="…"), заборона інлайнових скриптів -->
-  <meta http-equiv="Content-Security-Policy"
-        content="
-          default-src 'self';
-          img-src 'self' data: https:;
-          connect-src 'self' https:;
-          style-src 'self' 'unsafe-inline';
-          font-src 'self' data: https:;
-          script-src 'self';
-          script-src-attr 'none';
-          object-src 'none';
-          base-uri 'self';
-        ">
+    <meta http-equiv="Content-Security-Policy"
+        content="
+          default-src 'self';
+          img-src 'self' data: https:;
+          connect-src 'self' https:;
+          style-src 'self' 'unsafe-inline';
+          font-src 'self' data: https:;
+          script-src 'self';
+          script-src-attr 'none';
+          object-src 'none';
+          base-uri 'self';
+        ">
 
-  <link rel="stylesheet" href="style.css"/>
-  <meta name="referrer" content="no-referrer" />
+  <link rel="stylesheet" href="style.css"/>
+  <meta name="referrer" content="no-referrer" />
 </head>
 <body>
-  <!-- Top bar -->
-  <header class="topbar">
-    <div class="container topbar__row">
-      <div class="brand">
-        <div class="brand__logo">📚</div>
-        <div class="brand__name">MyLibrary</div>
-      </div>
-      <nav class="nav">
-        <a class="nav__link active">Каталог</a>
-        <a class="nav__link">Автори</a>
-        <a class="nav__link">Улюблене</a>
-      </nav>
-      <div class="profile">
-        <button id="enrichBtn" class="btn ghost small">Збагачення</button>
-        <button id="themeToggle" class="btn small">Тема</button>
-      </div>
-    </div>
-  </header>
+    <header class="topbar">
+    <div class="container topbar__row">
+      <div class="brand">
+        <div class="brand__logo">📚</div>
+        <div class="brand__name">MyLibrary</div>
+      </div>
+      <nav class="nav">
+        <a class="nav__link active">Каталог</a>
+        <a class="nav__link">Автори</a>
+        <a class="nav__link">Улюблене</a>
+      </nav>
+      <div class="profile">
+        <button id="enrichBtn" class="btn ghost small">Збагачення</button>
+        <button id="themeToggle" class="btn small">Тема</button>
+      </div>
+    </div>
+  </header>
 
-  <!-- Filters -->
-  <section class="filters">
-    <div class="container filters__row">
-      <div class="filters__left">
-        <div class="input search">
-          <input id="searchInput" type="text" placeholder="Пошук по назві або автору..."/>
-          <span class="search__icon">🔍</span>
-        </div>
-      </div>
-      <div class="filters__right">
-        <select id="statusSelect" class="select">
-          <option value="">Статус: Усі</option>
-          <option value="PROCHYTANA">Прочитано</option>
-          <option value="PLANUYU">Планую</option>
-        </select>
-        <select id="sortSelect" class="select">
-          <option value="-date">Сортування: Нові</option>
-          <option value="+date">Сортування: Старі</option>
-          <option value="+title">Назва A–Я</option>
-          <option value="-title">Назва Я–A</option>
-        </select>
-        <button id="addBtn" class="btn primary small">Додати книгу</button>
-        <button id="importBtn" class="btn small">Імпорт</button>
-      </div>
-    </div>
-  </section>
+    <section class="filters">
+    <div class="container filters__row">
+      <div class="filters__left">
+        <div class="input search">
+          <input id="searchInput" type="text" placeholder="Пошук по назві або автору..."/>
+          <span class="search__icon">🔍</span>
+        </div>
+      </div>
+      <div class="filters__right">
+        <select id="statusSelect" class="select">
+          <option value="">Статус: Усі</option>
+          <option value="PROCHYTANA">Прочитано</option>
+          <option value="PLANUYU">Планую</option>
+        </select>
+        <select id="sortSelect" class="select">
+          <option value="-date">Сортування: Нові</option>
+          <option value="+date">Сортування: Старі</option>
+          <option value="+title">Назва A–Я</option>
+          <option value="-title">Назва Я–A</option>
+        </select>
+        <button id="addBtn" class="btn primary small">Додати книгу</button>
+        <button id="importBtn" class="btn small">Імпорт</button>
+      </div>
+    </div>
+  </section>
 
-  <!-- Counters -->
-  <section class="container counters">
-    Всього: <span id="statTotal">0</span> · Прочитано: <span id="statRead">0</span> · Планую: <span id="statPlan">0</span>
-  </section>
+    <section class="container counters">
+    Всього: <span id="statTotal">0</span> · Прочитано: <span id="statRead">0</span> · Планую: <span id="statPlan">0</span>
+  </section>
 
-  <!-- Grid -->
-  <main class="container">
-    <div id="booksGrid" class="grid"></div>
-    <p id="loadingMessage" class="muted">Завантаження…</p>
-  </main>
+    <main class="container">
+    <div id="booksGrid" class="grid"></div>
+    <p id="loadingMessage" class="muted">Завантаження…</p>
+  </main>
 
-  <!-- External search (через бекенд-проксі /api/ext/search) -->
-  <section id="externalSearch" class="container" style="margin-top:20px;">
-    <div class="ext-box">
-      <h3 style="margin:0 0 8px 0;">Пошук у відкритих базах</h3>
-      <div class="ext-row">
-        <input id="extQuery" type="text" class="ext-input" placeholder="Введіть назву книги або Назва — Автор"/>
-        <button id="extSearchBtn" class="btn primary">Знайти</button>
-      </div>
-      <div id="extResults" class="ext-grid"></div>
-    </div>
-  </section>
+    <section id="externalSearch" class="container" style="margin-top:20px;">
+    <div class="ext-box">
+      <h3 style="margin:0 0 8px 0;">Пошук у відкритих базах</h3>
+      <div class="ext-row">
+        <input id="extQuery" type="text" class="ext-input" placeholder="Введіть назву книги або Назва — Автор"/>
+        <button id="extSearchBtn" class="btn primary">Знайти</button>
+      </div>
+      <div id="extResults" class="ext-grid"></div>
+    </div>
+  </section>
 
-  <!-- Book modal -->
-  <div id="modalBackdrop" class="modal-backdrop hidden"></div>
-  <div id="bookModal" class="modal hidden">
-    <div class="modal-card">
-      <button id="modalClose" class="btn ghost small-x">✕</button>
-      <div class="modal-cover" id="modalCover"></div>
-      <div class="modal-content">
-        <h3 id="modalTitle"></h3>
-        <p class="modal-author" id="modalAuthor"></p>
-        <p class="modal-meta" id="modalMeta"></p>
-        <div class="modal-desc" id="modalDesc"></div>
-      </div>
-    </div>
-  </div>
+    <div id="modalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="bookModal" class="modal hidden">
+    <div class="modal-card">
+      <button id="modalClose" class="btn ghost small-x">✕</button>
+      <div class="modal-cover" id="modalCover"></div>
+      <div class="modal-content">
+        <h3 id="modalTitle"></h3>
+        <p class="modal-author" id="modalAuthor"></p>
+        <p class="modal-meta" id="modalMeta">
+                    <th>Year</th>
+          <th>Genre</th>
+        </p>
+        <div class="modal-desc" id="modalDesc"></div>
+      </div>
+    </div>
+  </div>
 
-  <!-- Add Book Modal -->
-  <div id="addModalBackdrop" class="modal-backdrop hidden"></div>
-  <div id="addModal" class="modal hidden">
-    <div class="modal-card" style="grid-template-columns:1fr;">
-      <button id="addClose" class="btn ghost small-x">✕</button>
-      <div class="modal-content">
-        <h3>Додати книгу</h3>
-        <form id="addForm" class="form-grid">
-          <label>Назва
-            <input type="text" id="addTitle" required />
-          </label>
-          <label>Автор
-            <input type="text" id="addAuthor" required />
-          </label>
-          <label>Сторінок
-            <input type="number" id="addPages" min="1" required />
-          </label>
-          <label>Статус
-            <select id="addStatus">
-              <option value="PLANUYU">Планую</option>
-              <option value="PROCHYTANA">Прочитано</option>
-            </select>
-          </label>
-          <label>ISBN (необов'язково)
-            <input type="text" id="addIsbn" />
-          </label>
-          <label>Посилання на обкладинку (необов'язково)
-            <input type="url" id="addCover" />
-          </label>
-          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
-            <button type="button" class="btn" id="addCancel">Скасувати</button>
-            <button type="submit" class="btn primary">Зберегти</button>
-          </div>
-        </form>
-      </div>
-    </div>
-  </div>
+    <div id="addModalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="addModal" class="modal hidden">
+    <div class="modal-card" style="grid-template-columns:1fr;">
+      <button id="addClose" class="btn ghost small-x">✕</button>
+      <div class="modal-content">
+        <h3>Додати книгу</h3>
+        <form id="addForm" class="form-grid">
+          <label>Назва
+            <input type="text" id="addTitle" required />
+          </label>
+          <label>Автор
+            <input type="text" id="addAuthor" required />
+          </label>
+          <label>Сторінок
+            <input type="number" id="addPages" min="1" required />
+          </label>
+          <label>Статус
+            <select id="addStatus">
+              <option value="PLANUYU">Планую</option>
+              <option value="PROCHYTANA">Прочитано</option>
+            </select>
+          </label>
+                    <label>Рік видання
+            <input id="year_published" type="number" min="1000" max="2100" placeholder="напр. 2014">
+          </label>
 
-  <!-- Import Modal -->
-  <div id="importModalBackdrop" class="modal-backdrop hidden"></div>
-  <div id="importModal" class="modal hidden">
-    <div class="modal-card" style="grid-template-columns:1fr;">
-      <button id="importClose" class="btn ghost small-x">✕</button>
-      <div class="modal-content">
-        <h3>Імпорт списку</h3>
-        <p class="muted">Встав список у форматі: <code>Назва — Автор — Сторінок — [STATUS]</code>, по одному в рядок.</p>
-        <textarea id="importText" rows="10" style="width:100%;"></textarea>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
-          <button class="btn" id="importCancel">Скасувати</button>
-          <button class="btn primary" id="importDo">Імпортувати</button>
-        </div>
-      </div>
-    </div>
-  </div>
+          <label>Жанр
+            <input id="genre" type="text" maxlength="30" placeholder="напр. Фентезі">
+          </label>
+                    <label>ISBN (необов'язково)
+            <input type="text" id="addIsbn" />
+          </label>
+          <label>Посилання на обкладинку (необов'язково)
+            <input type="url" id="addCover" />
+          </label>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+            <button type="button" class="btn" id="addCancel">Скасувати</button>
+            <button type="submit" class="btn primary">Зберегти</button>
+          </div>
+        </form>
+      </div>
+          </div>
+  </div>
 
-  <div id="toast" class="toast"></div>
+    <div id="importModalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="importModal" class="modal hidden">
+    <div class="modal-card" style="grid-template-columns:1fr;">
+      <button id="importClose" class="btn ghost small-x">✕</button>
+      <div class="modal-content">
+        <h3>Імпорт списку</h3>
+        <p class="muted">Встав список у форматі: <code>Назва — Автор — Сторінок — [STATUS]</code>, по одному в рядок.</p>
+        <textarea id="importText" rows="10" style="width:100%;"></textarea>
+        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
+          <button class="btn" id="importCancel">Скасувати</button>
+          <button class="btn primary" id="importDo">Імпортувати</button>
+        </div>
+      </div>
+    </div>
+  </div>
 
-  <input id="hiddenFileInput" type="file" accept="image/png,image/jpeg,image/jpg,image/svg+xml" style="display:none" />
+  <div id="toast" class="toast"></div>
 
-  <!-- ВАЖЛИВО: зовнішній скрипт, без інлайнових обробників; defer щоб DOM уже існував -->
-  <script src="script.js" defer></script>
+  <input id="hiddenFileInput" type="file" accept="image/png,image/jpeg,image/jpg,image/svg+xml" style="display:none" />
+
+    <script src="script.js" defer></script>
 </body>
 </html>

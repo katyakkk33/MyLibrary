@@ -1,0 +1,13 @@
+# Node.js / TypeScript
+node_modules/
+dist/
+*.log
+logs/
+
+# SQLite тимчасові файли
+*.sqlite-wal
+*.sqlite-shm
+
+# OS / Editor
+.DS_Store
+Thumbs.db

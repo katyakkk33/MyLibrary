@@ -1,0 +1,260 @@
+[
+  {
+    "tytul": "Вбити пересмішника",
+    "autor": "Гарпер Лі",
+    "kilkist_storinyok": 320,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "1984",
+    "autor": "Джордж Орвелл",
+    "kilkist_storinyok": 328,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Великий Ґетсбі",
+    "autor": "Френсіс Скотт Фіцжеральд",
+    "kilkist_storinyok": 200,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Гаррі Поттер і філософський камінь",
+    "autor": "Джоан Роулінґ",
+    "kilkist_storinyok": 320,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Колгосп тварин",
+    "autor": "Джордж Орвелл",
+    "kilkist_storinyok": 144,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Гоббіт, або Туди і звідти",
+    "autor": "Джон Рональд Руел Толкін",
+    "kilkist_storinyok": 310,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Маленький принц",
+    "autor": "Антуан де-Сент Екзюпері",
+    "kilkist_storinyok": 96,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "451° за Фаренгейтом",
+    "autor": "Рей Бредбері",
+    "kilkist_storinyok": 190,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Ловець у житі",
+    "autor": "Джером Девід Селінджер",
+    "kilkist_storinyok": 277,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Лев, Біла Відьма та шафа",
+    "autor": "Клайв Стейплз Льюїс",
+    "kilkist_storinyok": 208,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Грона гніву",
+    "autor": "Джон Стейнбек",
+    "kilkist_storinyok": 464,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Сто років самотності",
+    "autor": "Ґабріель Ґарсія Маркес",
+    "kilkist_storinyok": 432,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Який чудесний світ новий!",
+    "autor": "Олдос Гакслі",
+    "kilkist_storinyok": 288,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Звіяні вітром",
+    "autor": "Маргарет Мітчелл",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 960
+  },
+  {
+    "tytul": "Про мишей і людей",
+    "autor": "Джон Стейнбек",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 112
+  },
+  {
+    "tytul": "Гаррі Поттер і в’язень Аскабану",
+    "autor": "Джоан Роулінґ",
+    "kilkist_storinyok": 384,
+    "status": "PLANUYU"
+  },
+  {
+    "tytul": "Володар мух",
+    "autor": "Вільям Ґолдінґ",
+    "kilkist_storinyok": 224,
+    "status": "PROCHYTANA"
+  },
+  {
+    "tytul": "Бойня номер п'ять",
+    "autor": "Курт Воннеґут",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 240
+  },
+  {
+    "tytul": "На схід від Едему",
+    "autor": "Джон Стейнбек",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 736
+  },
+  {
+    "tytul": "Оповідь служниці",
+    "autor": "Марґарет Етвуд",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 336
+  },
+  {
+    "tytul": "Братство персня",
+    "autor": "Джон Рональд Руел Толкін",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 480
+  },
+  {
+    "tytul": "Сторонній",
+    "autor": "Альберт Камю",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 128
+  },
+  {
+    "tytul": "Мемуари гейші",
+    "autor": "Артур Ґолден",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 512
+  },
+  {
+    "tytul": "Павутиння Шарлотти",
+    "autor": "Елвін Брукс Вайт",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 192
+  },
+  {
+    "tytul": "Хроніки Нарнії",
+    "autor": "Клайв Стейплз Льюїс",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 767
+  },
+  {
+    "tytul": "Старий і море",
+    "autor": "Ернест Гемінґвей",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 132
+  },
+  {
+    "tytul": "Гра Ендера",
+    "autor": "Орсон Скотт Кард",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 352
+  },
+  {
+    "tytul": "Повернення короля",
+    "autor": "Джон Рональд Руел Толкін",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 464
+  },
+  {
+    "tytul": "Дві вежі",
+    "autor": "Джон Рональд Руел Толкін",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 448
+  },
+  {
+    "tytul": "Під скляним ковпаком",
+    "autor": "Сильвія Плат",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 288
+  },
+  {
+    "tytul": "Алхімік",
+    "autor": "Пауло Коельо",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 208
+  },
+  {
+    "tytul": "Енн із Зелених дахів",
+    "autor": "Люсі-Мод Монтгомері",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 320
+  },
+  {
+    "tytul": "З холодним серцем",
+    "autor": "Трумен Капоте",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 384
+  },
+  {
+    "tytul": "Барва пурпурова",
+    "autor": "Еліс Вокер",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 320
+  },
+  {
+    "tytul": "Перетворення",
+    "autor": "Франц Кафка",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 160
+  },
+  {
+    "tytul": "Кохання під час холери",
+    "autor": "Ґабріель Ґарсія Маркес",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 368
+  },
+  {
+    "tytul": "Таємний сад",
+    "autor": "Френсіс Годґсон Бернет",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 288
+  },
+  {
+    "tytul": "Сіддхартха",
+    "autor": "Герман Гессе",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 176
+  },
+  {
+    "tytul": "Ребекка",
+    "autor": "Дафна дю Мор’є",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 448
+  },
+  {
+    "tytul": "Протистояння",
+    "autor": "Стівен Кінг",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 1152
+  },
+  {
+    "tytul": "Нестерпна легкість буття",
+    "autor": "Мілан Кундера",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 320
+  },
+  {
+    "tytul": "Ім’я рози",
+    "autor": "Умберто Еко",
+    "status": "PLANUYU",
+    "kilkist_storinyok": 592
+  },
+  {
+    "tytul": "Дюна",
+    "autor": "Френк Герберт",
+    "status": "PROCHYTANA",
+    "kilkist_storinyok": 688
+  }
+]

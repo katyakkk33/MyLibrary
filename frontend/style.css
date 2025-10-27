@@ -1,0 +1,233 @@
+/* === Theme tokens === */
+:root{
+  --bg:#0b1020; --card:#0f172a; --text:#e5e7eb; --muted:#9ca3af; --line:rgba(255,255,255,.1);
+  --primary:#7c3aed; --primary-ghost:rgba(124,58,237,.14); --accent:#6366f1;
+  --success:#16a34a; --success-ghost:rgba(22,163,74,.16); --shadow:0 6px 24px rgba(0,0,0,.25);
+}
+.theme-light{
+  --bg:#f6f7fb; --card:#ffffff; --text:#101828; --muted:#667085; --line:#e7e9f1;
+  --primary:#4f46e5; --primary-ghost:#eef2ff; --accent:#4f46e5;
+  --success:#16a34a; --success-ghost:#ecfdf5; --shadow:0 6px 24px rgba(16,24,40,.08);
+}
+
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-apple-system,Segoe UI,Roboto}
+.container{max-width:1200px;margin:0 auto;padding:0 16px}
+.muted{color:var(--muted)}
+
+/* Buttons & Inputs */
+.btn{border:1px solid var(--line);background:var(--card);color:var(--text);padding:8px 12px;border-radius:10px;cursor:pointer}
+.btn.small{padding:6px 9px;font-size:12px;border-radius:8px}
+.btn.primary{background:var(--primary);color:#fff;border-color:var(--primary)}
+.btn.primary:hover{filter:brightness(.95)}
+.btn.ghost{background:var(--primary-ghost);color:var(--accent);border-color:rgba(99,102,241,.25)}
+.select,.input.search input{height:40px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);padding:0 10px}
+.input.search{position:relative}
+.input.search input{padding-right:34px}
+.search__icon{position:absolute;right:10px;top:50%;transform:translateY(-50%);opacity:.6}
+
+/* Topbar */
+.topbar{position:sticky;top:0;z-index:30;background:var(--card);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.topbar__row{display:flex;align-items:center;gap:20px;height:64px}
+.brand{display:flex;align-items:center;gap:10px}
+.brand__logo{width:30px;height:30px;border-radius:8px;background:var(--primary-ghost);display:grid;place-items:center}
+.brand__name{font-weight:700}
+.nav{display:flex;gap:12px;margin-left:auto}
+.nav__link{color:var(--muted);text-decoration:none;padding:6px 8px;border-radius:8px}
+.nav__link.active,.nav__link:hover{background:rgba(255,255,255,.06)}
+.profile{display:flex;align-items:center;gap:8px}
+.avatar{width:30px;height:30px;border-radius:50%;background:var(--primary-ghost);color:var(--accent);display:grid;place-items:center;font-weight:700}
+
+/* Filters */
+.filters{background:var(--card);border-bottom:1px solid var(--line)}
+.filters__row{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 0}
+.filters__left{flex:1}
+.filters__right{display:flex;gap:10px}
+
+/* Counters */
+.counters{padding:10px 0;color:var(--muted)}
+
+/* Grid & Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding:16px 0}
+.card{
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  overflow:visible;
+  box-shadow:var(--shadow);
+  transition:transform .15s ease,box-shadow .15s ease;
+}
+.card:hover{transform:translateY(-3px);box-shadow:0 10px 26px rgba(0,0,0,.28)}
+.card__body{padding:10px 12px;display:grid;gap:6px}
+.card__title{font-weight:700;min-height:40px}
+.card__author{color:var(--muted);font-size:13px}
+.card__meta{display:flex;align-items:center;gap:8px;color:var(--muted);font-size:12px}
+.badge{padding:3px 7px;border-radius:999px;font-size:11px;background:var(--success-ghost);color:var(--success);border:1px solid rgba(22,163,74,.25)}
+.badge.plan{background:rgba(148,163,184,.15);color:#94a3b8;border:1px solid rgba(148,163,184,.35)}
+
+/* ===== Card cover (єдина фінальна версія) ===== */
+.card__cover{
+  position:relative;
+  width:100%;
+  aspect-ratio:2/3;
+  background:#111827; /* базовий фон */
+  overflow:hidden;
+}
+
+/* Шари всередині обкладинки */
+.card__cover .cover-fallback,
+.card__cover .cover-img{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* Fallback SVG нижче */
+.card__cover .cover-fallback{
+  z-index:0;
+  background-size:cover;
+  background-position:center;
+  pointer-events:none;
+}
+
+/* Фото зверху, плавне з’явлення після onload */
+.card__cover .cover-img{
+  z-index:1;
+  opacity:0;
+  transition:opacity .2s ease;
+  display:block;
+}
+.card__cover .cover-img.loaded{
+  opacity:1;
+}
+
+/* Kebab (fixed overlap) */
+.kebab {
+  position: relative;
+  margin-left: auto;
+  z-index: 50; /* підняли контейнер */
+}
+
+.kebab__btn {
+  border: 1px solid var(--line);
+  background: var(--card);
+  border-radius: 8px;
+  padding: 4px 6px;
+  font-size: 16px;
+  cursor: pointer;
+  color: var(--text);
+}
+
+.kebab__menu {
+  position: absolute;
+  right: 0;
+  top: 36px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  display: none;
+  min-width: 160px;
+  overflow: hidden;
+  z-index: 9999; /* 🔥 критично — поверх усього */
+}
+
+.kebab__menu button {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 8px 10px;
+  border: 0;
+  background: var(--card);
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text);
+}
+
+.kebab__menu button:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.kebab.open .kebab__menu {
+  display: block;
+}
+
+/* бонус: щоб не ховалось за overflow картки */
+.card {
+  overflow: visible !important;
+}
+
+
+/* Modal */
+.modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(6px);z-index:999}
+.modal{position:fixed;inset:0;display:grid;place-items:center;z-index:1000}
+.modal-card{
+  width:min(920px,calc(100% - 24px));
+  background:var(--card);
+  border:1px solid var(--line);
+  border-radius:16px;
+  box-shadow:0 20px 60px rgba(0,0,0,.4);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:320px 1fr;
+  position:relative
+}
+.modal-cover{background:#0e1726;background-size:cover;background-position:center;aspect-ratio:2/3;border-radius:16px 0 0 16px}
+.modal-content{padding:18px;display:grid;gap:10px}
+.modal h3{margin:0}
+.modal-author,.modal-meta{margin:0;color:var(--muted)}
+.modal-desc{color:rgba(229,231,235,.9);line-height:1.6;max-height:55vh;overflow:auto}
+.small-x{position:absolute;top:10px;right:10px}
+.hidden{display:none!important}
+@media (max-width:720px){.modal-card{grid-template-columns:1fr}.modal-cover{aspect-ratio:16/9}}
+
+/* Form */
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.form-grid label{display:grid;gap:6px;font-size:13px;color:var(--muted)}
+.form-grid input,.form-grid select,.form-grid textarea{height:38px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--text);padding:0 10px}
+.form-grid textarea{height:auto;padding:10px}
+
+/* Authors grid */
+.authors-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:60vh;overflow:auto;}
+.author-item{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border:1px solid rgba(255,255,255,0.08);border-radius:10px;cursor:pointer;}
+.author-item:hover{background:rgba(255,255,255,0.06);}
+
+/* Body lock for modals */
+body.modal-open{overflow:hidden}
+
+/* Toasts */
+.toast{position:fixed;right:16px;bottom:16px;z-index:1100;display:flex;flex-direction:column;gap:8px}
+.toast__item{background:rgba(20,20,20,.9);color:#fff;padding:10px 14px;border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.35);font-size:14px;max-width:360px}
+.toast__item.ok{background:rgba(16,147,88,.92)}
+.toast__item.err{background:rgba(180,47,47,.92)}
+
+/* External search */
+.ext-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:16px;border-radius:14px}
+.ext-row{display:flex;gap:10px;margin:8px 0 12px}
+.ext-input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:inherit}
+.ext-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+.ext-card{border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.2)}
+.ext-cover{aspect-ratio:3/4;background-size:cover;background-position:center}
+.ext-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.ext-title{font-weight:600}
+.ext-meta{font-size:12px;opacity:.8}
+@media (max-width:1100px){.ext-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
+@media (max-width:720px){.ext-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+
+/* Optional: дрібна адаптація для дуже вузьких екранів */
+@media (max-width:420px){
+  .grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+
+/* щоб меню завжди було вище сусідніх карток */
+.card { position: relative; z-index: 0; }
+.card:hover { transform: translateY(-3px); z-index: 2; }
+
+/* коли меню відкрите – не рухаємо картку і тримаємо її над іншими */
+.card.menu-opened { transform: none !important; z-index: 5; }
+
+/* сам кебаб і меню поверх усього */
+.kebab { position: relative; z-index: 6; }
+.kebab__menu { z-index: 1000; } /* було 20 – замало */

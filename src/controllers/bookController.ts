@@ -3,6 +3,25 @@ import { all, get, run } from '../db';
 import { Book, NewBook } from '../models/Book';
 import { normalizeBookPayload, validateBookData } from '../utils/validator';
 
+// --- Доп. валідації під нові поля (локально, щоб не лізти в validator.ts) ---
+function validateYearPublished(v: any): number | null {
+  if (v === undefined || v === null || v === '') return null;
+  const n = Number(v);
+  if (!Number.isInteger(n) || n < 1000 || n > 2100) {
+    throw new Error('year_published must be integer in 1000..2100');
+  }
+  return n;
+}
+function validateGenre(v: any): string | null {
+  if (v === undefined || v === null) return null;
+  const s = String(v).trim();
+  if (s.length === 0) return null;
+  if (s.length < 2 || s.length > 30) {
+    throw new Error('genre length must be 2..30');
+  }
+  return s;
+}
+
 // Helpers
 const rowToBook = (r: any): Book => ({
   id: r.id,
@@ -13,7 +32,10 @@ const rowToBook = (r: any): Book => ({
   data_dodania: r.data_dodania,
   isbn: r.isbn ?? null,
   cover_url: r.cover_url ?? null,
-  description: r.description ?? null
+  description: r.description ?? null,
+  // NEW:
+  year_published: r.year_published ?? null,
+  genre: r.genre ?? null,
 });
 
 export async function listBooks(req: Request, res: Response) {
@@ -42,16 +64,36 @@ export async function getBookById(req: Request, res: Response) {
 }
 
 export async function createBook(req: Request, res: Response) {
+  // існуюча нормалізація/валідація для базових полів
   const payload: NewBook = normalizeBookPayload(req.body);
   const err = validateBookData(payload);
   if (err) return res.status(422).json({ error: err });
 
+  // нові поля — читаємо прямо з тіла запиту, валідуючи локально
+  let year: number | null;
+  let gen: string | null;
+  try {
+    year = validateYearPublished((req.body as any).year_published);
+    gen  = validateGenre((req.body as any).genre);
+  } catch (e: any) {
+    return res.status(422).json({ error: e.message ?? 'Validation error' });
+  }
+
   try {
     const result = run(
-      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description)
-       VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?)`,
-      [payload.tytul, payload.autor, payload.kilkist_storinyok, payload.status,
-       payload.isbn ?? null, payload.cover_url ?? null, payload.description ?? null]
+      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description, year_published, genre)
+       VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, ?)`,
+      [
+        payload.tytul,
+        payload.autor,
+        payload.kilkist_storinyok,
+        payload.status,
+        payload.isbn ?? null,
+        payload.cover_url ?? null,
+        payload.description ?? null,
+        year,
+        gen
+      ]
     );
     const row = get<Book>('SELECT * FROM books WHERE id=?', [result.lastInsertRowid]);
     res.status(201).json(rowToBook(row));
@@ -68,15 +110,40 @@ export async function updateBook(req: Request, res: Response) {
   const existing = get<Book>('SELECT * FROM books WHERE id=?', [id]);
   if (!existing) return res.status(404).json({ error: 'Не знайдено' });
 
+  // зливаємо наявні поля + нові значення з тіла
   const payload: NewBook = normalizeBookPayload({ ...existing, ...req.body });
   const err = validateBookData(payload);
   if (err) return res.status(422).json({ error: err });
 
+  let year: number | null;
+  let gen: string | null;
+  try {
+    // якщо не передали — лишаємо як у БД
+    const inputYear = (req.body as any).year_published ?? (existing as any).year_published ?? null;
+    const inputGenre = (req.body as any).genre ?? (existing as any).genre ?? null;
+    year = validateYearPublished(inputYear);
+    gen  = validateGenre(inputGenre);
+  } catch (e: any) {
+    return res.status(422).json({ error: e.message ?? 'Validation error' });
+  }
+
   try {
     run(
-      `UPDATE books SET tytul=?, autor=?, kilkist_storinyok=?, status=?, isbn=?, cover_url=?, description=? WHERE id=?`,
-      [payload.tytul, payload.autor, payload.kilkist_storinyok, payload.status,
-       payload.isbn ?? null, payload.cover_url ?? null, payload.description ?? null, id]
+      `UPDATE books
+         SET tytul=?, autor=?, kilkist_storinyok=?, status=?, isbn=?, cover_url=?, description=?, year_published=?, genre=?
+       WHERE id=?`,
+      [
+        payload.tytul,
+        payload.autor,
+        payload.kilkist_storinyok,
+        payload.status,
+        payload.isbn ?? null,
+        payload.cover_url ?? null,
+        payload.description ?? null,
+        year,
+        gen,
+        id
+      ]
     );
     const row = get<Book>('SELECT * FROM books WHERE id=?', [id]);
     res.json(rowToBook(row));
@@ -102,12 +169,33 @@ export async function bulkCreate(req: Request, res: Response) {
     const payload = normalizeBookPayload(it);
     const err = validateBookData(payload);
     if (err) { results.skipped++; continue; }
+
+    let year: number | null = null;
+    let gen: string | null = null;
+    try {
+      year = validateYearPublished((it as any).year_published);
+      gen  = validateGenre((it as any).genre);
+    } catch {
+      // не валідне — пропускаємо
+      results.skipped++;
+      continue;
+    }
+
     try {
       run(
-        `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description)
-         VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?)`,
-        [payload.tytul, payload.autor, payload.kilkist_storinyok, payload.status,
-         payload.isbn ?? null, payload.cover_url ?? null, payload.description ?? null]
+        `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description, year_published, genre)
+         VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?, ?, ?)`,
+        [
+          payload.tytul,
+          payload.autor,
+          payload.kilkist_storinyok,
+          payload.status,
+          payload.isbn ?? null,
+          payload.cover_url ?? null,
+          payload.description ?? null,
+          year,
+          gen
+        ]
       );
       results.created++;
     } catch (e: any) {

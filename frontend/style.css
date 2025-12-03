@@ -36,16 +36,53 @@ body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-a
 .nav__link{color:var(--muted);text-decoration:none;padding:6px 8px;border-radius:8px}
 .nav__link.active,.nav__link:hover{background:rgba(255,255,255,.06)}
 .profile{display:flex;align-items:center;gap:8px}
+.lang-switch{
+  display:flex;
+  gap:4px;
+  margin-right:8px;
+}
+
+.lang-btn.active{
+  border-color:var(--accent);
+  color:var(--accent);
+}
 .avatar{width:30px;height:30px;border-radius:50%;background:var(--primary-ghost);color:var(--accent);display:grid;place-items:center;font-weight:700}
 
 /* Filters */
 .filters{background:var(--card);border-bottom:1px solid var(--line)}
 .filters__row{display:flex;gap:16px;align-items:center;justify-content:space-between;padding:12px 0}
-.filters__left{flex:1}
+.filters__left{
+  flex:1;
+  display:flex;
+  gap:10px;
+  align-items:center;
+}
+
 .filters__right{display:flex;gap:10px}
+.ext-inline{
+  display:flex;
+  gap:6px;
+  align-items:center;
+}
+
+.ext-inline .ext-input{
+  width:220px;
+  padding:8px 10px;
+  border-radius:10px;
+  border:1px solid rgba(255,255,255,0.18);
+  background:transparent;
+  color:inherit;
+  font-size:14px;
+}
+
 
 /* Counters */
-.counters{padding:10px 0;color:var(--muted)}
+.counters{
+  padding:10px 0;
+  color:var(--muted);
+  text-align:center;
+}
+
 
 /* Grid & Cards */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;padding:16px 0}
@@ -174,6 +211,40 @@ body{margin:0;background:var(--bg);color:var(--text);font:14px/1.45 system-ui,-a
   grid-template-columns:320px 1fr;
   position:relative
 }
+/* Authors modal */
+.authors-modal .modal-card{
+  width:min(720px,calc(100% - 24px));
+  grid-template-columns:1fr;
+}
+
+.authors-grid{
+  margin-top:12px;
+  max-height:60vh;
+  overflow:auto;
+  padding-right:4px;
+}
+
+.authors-grid__row{
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  padding:4px 0;
+  border-bottom:1px solid rgba(255,255,255,.04);
+}
+
+.authors-grid__name{
+  flex:1;
+  overflow:hidden;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+
+.authors-grid__count{
+  min-width:24px;
+  text-align:right;
+  color:var(--muted);
+}
+
 .modal-cover{background:#0e1726;background-size:cover;background-position:center;aspect-ratio:2/3;border-radius:16px 0 0 16px}
 .modal-content{padding:18px;display:grid;gap:10px}
 .modal h3{margin:0}
@@ -204,17 +275,88 @@ body.modal-open{overflow:hidden}
 .toast__item.err{background:rgba(180,47,47,.92)}
 
 /* External search */
-.ext-box{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);padding:16px;border-radius:14px}
-.ext-row{display:flex;gap:10px;margin:8px 0 12px}
-.ext-input{flex:1;padding:10px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.1);background:transparent;color:inherit}
-.ext-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
-.ext-card{border:1px solid rgba(255,255,255,0.08);border-radius:12px;overflow:hidden;background:rgba(0,0,0,0.2)}
-.ext-cover{aspect-ratio:3/4;background-size:cover;background-position:center}
-.ext-body{padding:10px 12px;display:flex;flex-direction:column;gap:6px}
-.ext-title{font-weight:600}
-.ext-meta{font-size:12px;opacity:.8}
-@media (max-width:1100px){.ext-grid{grid-template-columns:repeat(3,minmax(0,1fr));}}
-@media (max-width:720px){.ext-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.ext-box {
+  margin-top: 24px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+/* Сітка результатів */
+.ext-grid {
+  margin-top: 16px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+/* Окрема картка */
+.ext-card {
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+}
+
+/* Блок обкладинки */
+.ext-cover {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  aspect-ratio: 2 / 3;
+  background: #020617;
+}
+
+/* SVG-заглушка (ініціали) */
+.ext-cover .cover-fallback {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+}
+
+/* Справжня картинка */
+.ext-cover .cover-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Текст під обкладинкою */
+.ext-body {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.ext-title {
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.ext-meta {
+  font-size: 12px;
+  opacity: .8;
+}
+
+.ext-link {
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+/* Кнопка "Додати" притиснута до низу */
+.ext-card .btn {
+  margin-top: auto;
+  width: 100%;
+}
+
 
 /* Optional: дрібна адаптація для дуже вузьких екранів */
 @media (max-width:420px){
@@ -231,3 +373,149 @@ body.modal-open{overflow:hidden}
 /* сам кебаб і меню поверх усього */
 .kebab { position: relative; z-index: 6; }
 .kebab__menu { z-index: 1000; } /* було 20 – замало */
+
+/* Public hero */
+.hero{
+  padding:24px 0 16px;
+}
+
+.hero .container{
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  border-radius:16px;
+  padding:20px 18px 18px;
+  box-shadow:var(--shadow);
+}
+
+.hero h1{
+  margin:0 0 8px;
+  font-size:22px;
+}
+
+.hero p{
+  margin:0 0 4px;
+  color:var(--muted);
+}
+
+
+.language-switcher {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+  border-radius: 50px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  border-radius: 50px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #4CAF50;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* ===== External search – clean cards layout ===== */
+
+.ext-box{
+  margin-top: 24px;
+  background: var(--card);
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.ext-grid{
+  margin-top: 12px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 16px;
+}
+
+.ext-card{
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 16px;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  max-width: 260px;
+}
+
+.ext-cover{
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 10px;
+  aspect-ratio: 2 / 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #020617;
+}
+
+.ext-cover .cover-img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.ext-body{
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.ext-title{
+  font-weight: 600;
+  font-size: 15px;
+  margin-bottom: 2px;
+}
+
+.ext-meta{
+  font-size: 12px;
+  opacity: .8;
+}
+
+.ext-link{
+  font-size: 12px;
+  text-decoration: underline;
+}
+
+.ext-card .btn{
+  margin-top: auto;
+  width: 100%;
+}

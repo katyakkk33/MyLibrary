@@ -21,11 +21,17 @@ function main() {
   for (const b of items) {
     const exists = get('SELECT id FROM books WHERE tytul=? AND autor=?', [b.tytul, b.autor]);
     if (exists) { skipped++; continue; }
+        const pages =
+      typeof b.kilkist_storinyok === 'number' && b.kilkist_storinyok > 0
+        ? Math.trunc(b.kilkist_storinyok)
+        : 200;
+
     run(
       `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description)
        VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?)`,
-      [b.tytul, b.autor, b.kilkist_storinyok ?? null, b.status, b.isbn ?? null, b.cover_url ?? null, b.description ?? null]
+      [b.tytul, b.autor, pages, b.status, b.isbn ?? null, b.cover_url ?? null, b.description ?? null]
     );
+
     created++;
   }
   console.log(JSON.stringify({ created, skipped }));

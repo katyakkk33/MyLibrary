@@ -59,9 +59,9 @@ if not exist ".env" (
   if exist ".env.example" ( copy /Y ".env.example" ".env" >> "%LOG_FILE%" 2>&1 ) else ( type nul > ".env" )
 )
 powershell -NoProfile -ExecutionPolicy Bypass -Command ^
-  "$p='.env'; $t = (Get-Content $p -Raw -EA SilentlyContinue) -as [string]; if(-not $t){$t=''}; " ^
-  "function SetLine([string]$k,[string]$v){ if($t -match \"(?m)^\s*$k\s*=\s*.*$\"){ $script:t=[regex]::Replace($t, \"(?m)^\s*$k\s*=.*$\", \"$k=$v\") } else { $script:t+=\"$k=$v`n\" } } " ^
-  "SetLine 'PORT' '3000'; SetLine 'ALLOWED_ORIGINS' 'http://localhost:3000,http://127.0.0.1:3000'; SetLine 'DB_FILE' './data/books.db'; SetLine 'AUTO_ENRICH' '1'; " ^
+  "$p='.env'; $t = (Get-Content $p -Raw -EA SilentlyContinue) -as [string]; if(-not $t){$t=''}; " ^ 
+  "function SetLine([string]$k,[string]$v){ if($t -match \"(?m)^\s*$k\s*=\s*.*$\"){ $script:t=[regex]::Replace($t, \"(?m)^\s*$k\s*=.*$\", \"$k=$v\") } else { $script:t+=\"$k=$v`n\" } } " ^ 
+  "SetLine 'PORT' '3000'; SetLine 'ALLOWED_ORIGINS' 'http://localhost:3000,http://127.0.0.1:3000'; SetLine 'DB_FILE' './data/books.db'; SetLine 'AUTO_ENRICH' '1'; " ^ 
   "Set-Content -Path $p -Value $t -Encoding UTF8" >> "%LOG_FILE%" 2>&1 || ( call :fail "Failed to update .env" )
 call :ok ".env is ready."
 

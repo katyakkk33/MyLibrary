@@ -1,4 +1,6 @@
 import { Router, Request, Response as ExResponse } from 'express';
+import * as cheerio from 'cheerio';
+
 
 const router = Router();
 
@@ -31,6 +33,92 @@ function pushUnique<T extends { url: string }>(arr: T[], it: T) {
   if (!arr.find(x => x.url === it.url)) arr.push(it);
 }
 
+type ExternalItem = {
+  src: 'OL' | 'GB' | 'YB';
+  title: string;
+  author: string;
+  pages: number;
+  cover: string | null;
+  isbn?: string;
+  description?: string;
+  url?: string;
+  price?: string;
+};
+
+async function searchYakabooByQuery(query: string): Promise<ExternalItem[]> {
+  const q = query.trim();
+  if (!q) return [];
+
+  const searchUrl = new URL('https://www.yakaboo.ua/ua/search/');
+  searchUrl.searchParams.set('multi', '1');
+  searchUrl.searchParams.set('text', q);
+
+  let html: string;
+  try {
+    const r = await fetchWithTimeout(searchUrl.toString(), 10000);
+    if (!r.ok) {
+      console.warn('[yakaboo] status', r.status);
+      return [];
+    }
+    html = await r.text();
+  } catch (e) {
+    console.warn('[yakaboo] request error', e);
+    return [];
+  }
+
+  const $ = cheerio.load(html);
+  const results: ExternalItem[] = [];
+
+  // ⚠️ СЕЛЕКТОРИ ПРИБЛИЗНІ — їх треба буде підкрутити через DevTools на сторінці пошуку Yakaboo
+  $('[data-qa="productItem"], .product-item, .product-card').each((_, el) => {
+    const root = $(el);
+
+    const link = root.find('a[data-qa="productName"], .product-title a').first();
+    const title = link.text().trim();
+    if (!title) return;
+
+    const author =
+      root
+        .find('[data-qa="productAuthors"] a, .product-author a')
+        .first()
+        .text()
+        .trim() || '';
+
+    const img = root.find('img').first();
+    const coverAttr = img.attr('data-src') || img.attr('src') || null;
+    const cover =
+      coverAttr && coverAttr.startsWith('//')
+        ? 'https:' + coverAttr
+        : coverAttr;
+
+    const href = link.attr('href') || '';
+    const url = href.startsWith('http')
+      ? href
+      : `https://www.yakaboo.ua${href}`;
+
+    const price =
+      root
+        .find('[data-qa="productPrice"], .price__value')
+        .first()
+        .text()
+        .trim() || undefined;
+
+    results.push({
+      src: 'YB',
+      title,
+      author,
+      pages: 0,              // з пошукового списку сторінки важко дістати
+      cover: cover || null,
+      description: '',
+      url,
+      price
+    });
+  });
+
+  return results;
+}
+
+
 /* ------------------------------ /ext/search ------------------------------- */
 /**
  * GET /api/ext/search?q=Назва — Автор
@@ -45,17 +133,16 @@ router.get('/search', async (req: Request, res: ExResponse) => {
     const title = titleRaw || q;
     const author = authorRaw || '';
 
-    type Item = {
-      src: 'OL' | 'GB';
-      title: string;
-      author: string;
-      pages: number;
-      cover: string | null;
-      isbn?: string;
-      description?: string;
-    };
-    const items: Item[] = [];
+    const items: ExternalItem[] = [];
 
+        // 0) Yakaboo – пробуємо знайти книжки по назві
+    try {
+      const ybItems = await searchYakabooByQuery(title || q);
+      ybItems.forEach(it => items.push(it));
+    } catch (e) {
+      console.warn('[yakaboo] search failed', e);
+    }
+ 
     /* ---- OpenLibrary (title+author) ---- */
     try {
       const url = new URL('https://openlibrary.org/search.json');
@@ -172,7 +259,7 @@ router.get('/search', async (req: Request, res: ExResponse) => {
     }
 
     // de-dup by title|author
-    const uniq = new Map<string, Item>();
+    const uniq = new Map<string, ExternalItem>();
     items.forEach(it => {
       const k = `${(it.title || '').toLowerCase()}|${(it.author || '').toLowerCase()}`;
       if (!uniq.has(k)) uniq.set(k, it);

@@ -12,6 +12,10 @@ import bookRoutes from './routes/bookRoutes';
 import externalRoutes from './routes/externalRoutes';
 import debugRoutes from './routes/debugRoutes'; // опційно (увімкнеться, якщо DEBUG_DB=1)
 
+import authRoutes from './routes/authRoutes';
+import { authMiddleware } from './middleware/auth';
+
+
 dotenv.config();
 
 /* ----------------- helpers ----------------- */
@@ -35,6 +39,17 @@ const DB_FILE = (process.env.DB_FILE || path.resolve(__dirname, '..', 'data', 'b
 
 /* ----------------- app ----------------- */
 const app = express();
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin) return callback(null, true); // наприклад, curl/postman
+    if (ALLOWED.some(o => typeof o === 'string' ? o === origin : o.test(origin))) {
+      return callback(null, true);
+    }
+    return callback(new Error('Not allowed by CORS'));
+  },
+  credentials: true
+}));
 
 app.use(helmet({
   contentSecurityPolicy: {
@@ -102,11 +117,17 @@ if (process.env.DEBUG_DB === '1') {
 }
 
 /* ----------------- api ----------------- */
-app.use('/api/books', bookRoutes);
+// Реєстрація та логування (доступні публічно)
+app.use(authRoutes);          // /register, /login
+app.use('/api/auth', authRoutes); // дублюємо як /api/auth/register, /api/auth/login (на всяк випадок)
 
-// Зовнішній пошук — обидва шляхи працюють:
+// CRUD книг тільки для залогінених
+app.use('/api/books', authMiddleware, bookRoutes);
+
+// Зовнішній пошук — може залишатися публічним
 app.use('/api/ext', externalRoutes);
 app.use('/api/external', externalRoutes);
+
 
 /* ----------------- static frontend ----------------- */
 const frontendDir = path.resolve(__dirname, '..', 'frontend');

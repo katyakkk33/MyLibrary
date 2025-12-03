@@ -25,9 +25,11 @@ export function normalizeBookPayload(body: any): NewBook {
 export function validateBookData(b: NewBook): string | null {
   if (!b.tytul) return 'Поле "tytul" обов’язкове.';
   if (!b.autor) return 'Поле "autor" обов’язкове.';
-  if (b.kilkist_storinyok !== undefined && (!Number.isInteger(b.kilkist_storinyok) || b.kilkist_storinyok! < 0)) {
-    return 'Поле "kilkist_storinyok" має бути невід’ємним цілим.';
+
+  if (b.kilkist_storinyok == null || !Number.isInteger(b.kilkist_storinyok) || b.kilkist_storinyok <= 0) {
+    return 'Поле "kilkist_storinyok" має бути додатним цілим числом.';
   }
+
   if (b.status !== 'PROCHYTANA' && b.status !== 'PLANUYU') {
     return 'Поле "status" має бути PROCHYTANA або PLANUYU.';
   }

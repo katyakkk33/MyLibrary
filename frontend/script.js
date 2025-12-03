@@ -12,6 +12,176 @@ function toast(msg, type = 'ok', ms = 2500) {
   }, ms);
 }
 
+// ========================= I18N ==========================
+const SUPPORTED_LANGS = ["ua", "pl"];
+const LANG_STORAGE_KEY = "mylib_lang";
+
+let currentLang = localStorage.getItem(LANG_STORAGE_KEY);
+if (!SUPPORTED_LANGS.includes(currentLang)) {
+  currentLang = "ua";
+}
+
+const I18N = {
+  ua: {
+    "nav.catalog": "Каталог",
+    "nav.authors": "Автори",
+    "nav.favorites": "Улюблене",
+
+    "btn.enrich": "Збагачення",
+    "btn.theme": "Тема",
+    "btn.login": "Увійти",
+    "btn.logout": "Вийти",
+    "btn.add_book": "Додати книгу",
+    "btn.import": "Імпорт",
+
+    "intro.title": "MyLibrary – твоя приватна бібліотека онлайн",
+    "intro.p1": "Цей застосунок допомагає зберігати прочитані й заплановані книги.",
+    "intro.p2": "Список книг і операції CRUD доступні лише після входу в систему.",
+
+    "filters.search": "Пошук по назві або автору...",
+    "filters.status_all": "Статус: Усі",
+    "filters.status_read": "Прочитано",
+    "filters.status_plan": "Планую",
+    "filters.sort_new": "Сортування: Нові",
+    "filters.sort_old": "Сортування: Старі",
+    "filters.sort_title_az": "Назва A–Я",
+    "filters.sort_title_za": "Назва Я–A",
+
+    "counters.total": "Всього:",
+    "counters.read": "Прочитано:",
+    "counters.plan": "Планую:",
+
+    "books.empty": "Порожньо. Додайте першу книгу.",
+    "books.status.read": "Прочитано",
+    "books.status.plan": "Планую",
+    "books.pages_short": "стор.",
+
+    "fav.add": "Улюблене",
+    "fav.remove": "Прибрати з улюблених",
+
+    "menu.actions": "Дії",
+    "menu.open": "Відкрити",
+    "menu.edit": "Редагувати",
+    "menu.delete": "Видалити",
+    "menu.mark_read": "Позначити як прочитано",
+    "menu.mark_plan": "Позначити як планую",
+
+    "ext.searching": "Шукаю…",
+    "ext.nothing": "Нічого не знайдено.",
+    "ext.add_btn": "Додати",
+
+    "toast.book_added": "Книгу додано",
+    "toast.book_add_failed": "Не вдалося додати",
+
+    "auth.login_required": "Щоб побачити свою бібліотеку, спочатку увійдіть.",
+
+    "authors.title": "Автори",
+    "authors.subtitle": "Список унікальних авторів та кількість книжок у твоїй бібліотеці.",
+    "authors.empty": "Ще немає жодної книги, щоб показати авторів.",
+
+    "ext.title": "Пошук у відкритих базах",
+    "ext.search_placeholder": "Пошук у відкритих базах",
+    "ext.search_btn": "Знайти в базах",
+
+    "ext.results_title": "Результати пошуку у відкритих базах",
+    "ext.back_to_library": "Повернутись до своєї бібліотеки",
+
+  },
+  pl: {
+    "nav.catalog": "Katalog",
+    "nav.authors": "Autorzy",
+    "nav.favorites": "Ulubione",
+
+    "btn.enrich": "Wzbogacenie",
+    "btn.theme": "Motyw",
+    "btn.login": "Zaloguj",
+    "btn.logout": "Wyloguj",
+    "btn.add_book": "Dodaj książkę",
+    "btn.import": "Import",
+
+    "intro.title": "MyLibrary – Twoja prywatna biblioteka online",
+    "intro.p1": "Ta aplikacja pozwala zapisać przeczytane i planowane książki.",
+    "intro.p2": "Lista książek i akcje CRUD są widoczne dopiero po zalogowaniu.",
+
+    "filters.search": "Szukaj po tytule lub autorze...",
+    "filters.status_all": "Status: wszystkie",
+    "filters.status_read": "Przeczytane",
+    "filters.status_plan": "Planuję",
+    "filters.sort_new": "Sortowanie: najnowsze",
+    "filters.sort_old": "Sortowanie: najstarsze",
+    "filters.sort_title_az": "Tytuł A–Z",
+    "filters.sort_title_za": "Tytuł Z–A",
+
+    "counters.total": "Razem:",
+    "counters.read": "Przeczytane:",
+    "counters.plan": "Planuję:",
+
+    "books.empty": "Brak książek. Dodaj pierwszą pozycję.",
+    "books.status.read": "Przeczytane",
+    "books.status.plan": "Planuję",
+    "books.pages_short": "str.",
+
+    "fav.add": "Ulubione",
+    "fav.remove": "Usuń z ulubionych",
+
+    "menu.actions": "Akcje",
+    "menu.open": "Otwórz",
+    "menu.edit": "Edytuj",
+    "menu.delete": "Usuń",
+    "menu.mark_read": "Oznacz jako przeczytane",
+    "menu.mark_plan": "Oznacz jako do przeczytania",
+
+    "ext.searching": "Szukam…",
+    "ext.nothing": "Nic nie znaleziono.",
+    "ext.add_btn": "Dodaj",
+
+    "toast.book_added": "Książka dodana",
+    "toast.book_add_failed": "Nie udało się dodać",
+
+    "auth.login_required": "Aby zobaczyć swoją bibliotekę, najpierw się zaloguj.",
+
+    "authors.title": "Autorzy",
+    "authors.subtitle": "Lista unikalnych autorów i liczba książek w Twojej bibliotece.",
+    "authors.empty": "Nie ma jeszcze żadnej książki, aby wyświetlić autorów.",
+
+    "ext.title": "Wyszukiwanie w otwartych bazach",
+    "ext.search_placeholder": "Szukaj w otwartych bazach",
+    "ext.search_btn": "Szukaj w bazach",
+
+   "ext.results_title": "Wyniki wyszukiwania w otwartych bazach",
+    "ext.back_to_library": "Wróć do swojej biblioteki"
+
+  }
+};
+
+function t(key, fallback) {
+  const dict = I18N[currentLang] || I18N.ua;
+  return dict[key] || fallback || key;
+}
+
+function applyI18nToDom() {
+  document.documentElement.lang = currentLang;
+
+  document.querySelectorAll("[data-i18n]").forEach((el) => {
+    const key = el.getAttribute("data-i18n");
+    if (!key) return;
+    el.textContent = t(key, el.textContent);
+  });
+
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+    const key = el.getAttribute("data-i18n-placeholder");
+    if (!key) return;
+    const fallback = el.getAttribute("placeholder") || "";
+    el.setAttribute("placeholder", t(key, fallback));
+  });
+}
+
+function updateLangButtonsUI() {
+  document.querySelectorAll(".lang-btn").forEach((btn) => {
+    btn.classList.toggle("active", btn.dataset.lang === currentLang);
+  });
+}
+
 // ============== Локальна SVG-«обкладинка» ===============
 function genCoverSVG(title, author) {
   const t = (title || '').trim();
@@ -23,12 +193,12 @@ function genCoverSVG(title, author) {
       <stop offset='0%' stop-color='${bg}' /><stop offset='100%' stop-color='#111827' /></linearGradient></defs>
     <rect width='100%' height='100%' fill='url(#g)'/>
     <text x='50%' y='55%' text-anchor='middle' fill='white'
-          font-family='Inter,Segoe UI,Arial' font-size='64' font-weight='700'>${initials}</text>
+      font-family='Inter,Segoe UI,Arial' font-size='64' font-weight='700'>${initials}</text>
   </svg>`;
   return `data:image/svg+xml;base64,${btoa(unescape(encodeURIComponent(svg)))}`;
 }
 
-// ======================= Улюблене ========================
+// ======================= ulubiony ========================
 const FAV_KEY = 'mylib_favorites';
 function getFav() {
   try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); }
@@ -46,6 +216,53 @@ function toItems(payload) {
   if (payload && Array.isArray(payload.books)) return payload.books;
   return [];
 }
+
+// ===================== Auth (token) ======================
+const TOKEN_KEY = 'mylib_token';
+const USER_KEY = 'mylib_user';
+
+function getToken() {
+  return localStorage.getItem(TOKEN_KEY) || null;
+}
+function setToken(token) {
+  if (token) localStorage.setItem(TOKEN_KEY, token);
+  else localStorage.removeItem(TOKEN_KEY);
+}
+function getUser() {
+  try { return JSON.parse(localStorage.getItem(USER_KEY) || 'null'); }
+  catch { return null; }
+}
+function setUser(u) {
+  if (u) localStorage.setItem(USER_KEY, JSON.stringify(u));
+  else localStorage.removeItem(USER_KEY);
+}
+function isLoggedIn() {
+  return !!getToken();
+}
+
+async function apiFetch(input, options = {}) {
+  const opts = { ...(options || {}) };
+  opts.headers = { ...(options && options.headers) };
+  const token = getToken();
+  if (token) {
+    opts.headers['Authorization'] = 'Bearer ' + token;
+  }
+  return fetch(input, opts);
+}
+
+function updateAuthUI() {
+  const logged = isLoggedIn();
+  const addBtn = document.getElementById('addBtn');
+  const importBtn = document.getElementById('importBtn');
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  if (addBtn) addBtn.classList.toggle('hidden', !logged);
+  if (importBtn) importBtn.classList.toggle('hidden', !logged);
+  if (logoutBtn) logoutBtn.classList.toggle('hidden', !logged);
+  if (loginBtn) loginBtn.classList.toggle('hidden', logged);
+}
+
 
 // ======================= Тема (dark/light) ===============
 function setTheme(name) {
@@ -87,6 +304,27 @@ function createCoverImg(src) {
   return img;
 }
 
+// ===================== Auth modal ========================
+function openAuthModal() {
+  document.getElementById('authModalBackdrop')?.classList.remove('hidden');
+  document.getElementById('authModal')?.classList.remove('hidden');
+  document.body.classList.add('modal-open');
+}
+function closeAuthModal() {
+  document.getElementById('authModalBackdrop')?.classList.add('hidden');
+  document.getElementById('authModal')?.classList.add('hidden');
+  document.body.classList.remove('modal-open');
+}
+function showLoginTab() {
+  document.getElementById('loginForm')?.classList.remove('hidden');
+  document.getElementById('registerForm')?.classList.add('hidden');
+}
+function showRegisterTab() {
+  document.getElementById('loginForm')?.classList.add('hidden');
+  document.getElementById('registerForm')?.classList.remove('hidden');
+}
+
+
 // ==================== Дані ===============================
 let BOOKS = [];
 
@@ -100,25 +338,55 @@ function counters(list) {
   document.getElementById('statPlan').textContent = plan;
 }
 
-// ==================== Рендер =============================
+// ==================== Render =============================
 async function render(list) {
   const grid = document.getElementById('booksGrid');
   const loading = document.getElementById('loadingMessage');
+
+  // Приховуємо лоадер
   if (loading) loading.style.display = 'none';
+  
+  // Очищаємо сітку та оновлюємо лічильники
   grid.innerHTML = '';
   counters(list);
 
+  // Якщо список порожній
   if (!list.length) {
-    grid.innerHTML = '<div class="muted" style="padding:24px;">Порожньо. Додайте першу книгу.</div>';
+    grid.innerHTML = `<div class="muted" style="padding:24px;">${t('books.empty', 'Порожньо. Додайте першу книгу.')}</div>`;
     return;
   }
 
+  // Рендеринг карток
   for (const b of list) {
     const imgUrl = coverFromBook(b);
     const bgSvg = genCoverSVG(b.tytul, b.autor);
 
+    // Блок дій (Кебаб-меню) з локалізацією
+    const actionsHtml = isLoggedIn() ? `
+      <div class="kebab">
+        <button class="kebab__btn" title="${t('menu.actions', 'Дії')}">⋮</button>
+        <div class="kebab__menu">
+          <button class="menu-open" data-id="${b.id}">${t('menu.open', 'Відкрити')}</button>
+          <button class="menu-edit" data-id="${b.id}">${t('menu.edit', 'Редагувати')}</button>
+          <button class="menu-del" data-id="${b.id}">${t('menu.delete', 'Видалити')}</button>
+          <button class="${isFav(b.id) ? 'menu-unfav' : 'menu-fav'}" data-id="${b.id}">
+            ${isFav(b.id) 
+              ? t('fav.remove', 'Прибрати з улюблених') 
+              : t('fav.add', 'Улюблене')}
+          </button>
+          ${b.status === 'PLANUYU'
+            ? `<button class="menu-mark-read" data-id="${b.id}">${t('menu.mark_read', 'Позначити як прочитано')}</button>`
+            : ''}
+          ${b.status === 'PROCHYTANA'
+            ? `<button class="menu-mark-plan" data-id="${b.id}">${t('menu.mark_plan', 'Позначити як планую')}</button>`
+            : ''}
+        </div>
+      </div>` : '';
+
+    // Створення елемента картки
     const card = document.createElement('div');
     card.className = 'card';
+
     card.innerHTML = `
       <div class="card__cover">
         <div class="cover-fallback" style="background-image:url('${esc(bgSvg)}')"></div>
@@ -126,39 +394,33 @@ async function render(list) {
       <div class="card__body">
         <div class="card__title">${esc(b.tytul)}</div>
         <div class="card__author">${esc(b.autor || '—')}</div>
+        
         <div class="card__meta">
           <span class="badge ${b.status === 'PROCHYTANA' ? '' : 'plan'}">
-            ${b.status === 'PROCHYTANA' ? 'Прочитано' : 'Планую'}
+            ${b.status === 'PROCHYTANA'
+              ? t('books.status.read', 'Прочитано')
+              : t('books.status.plan', 'Планую')}
           </span>
-          <span>${b.kilkist_storinyok || 0} стор.</span>
-          <div class="kebab">
-            <button class="kebab__btn" title="Дії">⋮</button>
-            <div class="kebab__menu">
-              <button class="menu-open" data-id="${b.id}">Опис</button>
-              <button class="menu-edit" data-id="${b.id}">Редагувати</button>
-              <button class="menu-del" data-id="${b.id}">Видалити</button>
-              ${isFav(b.id)
-                ? `<button class="menu-unfav" data-id="${b.id}">Прибрати з улюблених</button>`
-                : `<button class="menu-fav" data-id="${b.id}">Додати до улюблених</button>`}
-              ${b.status === 'PLANUYU'
-                ? `<button class="menu-mark-read" data-id="${b.id}">Позначити як прочитано</button>`
-                : ''}
-              ${b.status === 'PROCHYTANA'
-                ? `<button class="menu-mark-plan" data-id="${b.id}">Позначити як планую</button>`
-                : ''}
-            </div>
-          </div>
+          <span>${b.kilkist_storinyok || 0} ${t('books.pages_short', 'стор.')}</span>
+          
+          ${actionsHtml}
         </div>
       </div>`;
+
+    // Додавання картинки обкладинки, якщо вона є
     const coverBox = card.querySelector('.card__cover');
-    if (imgUrl) coverBox.appendChild(createCoverImg(imgUrl));
+    if (imgUrl) {
+      coverBox.appendChild(createCoverImg(imgUrl));
+    }
+
     grid.appendChild(card);
   }
 }
 
-// =================== Фільтри / сортування ================
+// =================== Filtry / sortowanie ================
 function applyFilters() {
-  const favOnly = document.querySelector('.nav .nav__link.active')?.textContent.trim() === 'Улюблене';
+  const activeLink = document.querySelector('.nav .nav__link.active');
+  const favOnly = activeLink?.dataset.view === 'favorites';
   const q = document.getElementById('searchInput').value.trim().toLowerCase();
   const st = document.getElementById('statusSelect').value;
   const sort = document.getElementById('sortSelect').value;
@@ -188,8 +450,19 @@ async function load() {
   try {
     const url = API.includes('?') ? API : `${API}?limit=1000&offset=0`;
     console.log('[load] fetching', url);
-    const r = await fetch(url, { cache: 'no-store' });
+    const r = await apiFetch(url, { cache: 'no-store' });
     console.log('[load] status', r.status);
+
+    if (r.status === 401 || r.status === 403) {
+      BOOKS = [];
+      if (grid) {
+        grid.innerHTML = `
+          <div class="muted" style="padding:24px;">
+            ${t('auth.login_required', 'Aby zobaczyć swoją bibliotekę, najpierw się zaloguj.')}
+          </div>`;
+      }
+      return;
+    }
 
     if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
 
@@ -206,7 +479,7 @@ async function load() {
     if (grid) {
       grid.innerHTML = `
         <div class="muted" style="padding:24px;">
-          Не вдалося завантажити книги з API. Переконайтеся, що сервер запущений.
+          Nie udało się pobrać danych z API.
           <br/><small>${String(e && e.message || e)}</small>
         </div>`;
     }
@@ -216,14 +489,148 @@ async function load() {
 }
 
 
+
 document.addEventListener('DOMContentLoaded', () => {
+  updateAuthUI();
+
+// --- I18N init ---
+  applyI18nToDom();
+  updateLangButtonsUI();
+  document.querySelectorAll('.lang-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const lang = btn.dataset.lang;
+      if (!SUPPORTED_LANGS.includes(lang)) return;
+      currentLang = lang;
+      localStorage.setItem(LANG_STORAGE_KEY, lang);
+      applyI18nToDom();
+      render(BOOKS);
+      updateLangButtonsUI();
+    });
+  });
+
   load();
+
+  const extBtn = document.getElementById('extSearchBtn');
+  const extInput = document.getElementById('extQuery');
+  if (extBtn) {
+    extBtn.addEventListener('click', extSearch);
+  }
+  if (extInput) {
+    extInput.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') extSearch();
+    });
+  }
+
   ['searchInput', 'statusSelect', 'sortSelect'].forEach(id => {
     const el = document.getElementById(id);
-    el?.addEventListener('input', applyFilters);
-    el?.addEventListener('change', applyFilters);
+    if (el) {
+      el.addEventListener('input', applyFilters);
+      el.addEventListener('change', applyFilters);
+    }
   });
+
+  const loginBtn = document.getElementById('loginBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+  const authClose = document.getElementById('authClose');
+  const tabLogin = document.getElementById('tabLogin');
+  const tabRegister = document.getElementById('tabRegister');
+  const loginForm = document.getElementById('loginForm');
+  const registerForm = document.getElementById('registerForm');
+
+  if (loginBtn) {
+    loginBtn.addEventListener('click', () => {
+      showLoginTab();
+      openAuthModal();
+    });
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener('click', () => {
+      setToken(null);
+      setUser(null);
+      updateAuthUI();
+      BOOKS = [];
+      applyFilters();
+      toast('Wylogowano.', 'ok');
+    });
+  }
+
+  if (authClose) {
+    authClose.addEventListener('click', () => {
+      closeAuthModal();
+    });
+  }
+
+  if (tabLogin) {
+    tabLogin.addEventListener('click', () => {
+      showLoginTab();
+    });
+  }
+
+  if (tabRegister) {
+    tabRegister.addEventListener('click', () => {
+      showRegisterTab();
+    });
+  }
+
+  if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const login = document.getElementById('loginLogin').value;
+      const password = document.getElementById('loginPassword').value;
+      try {
+        const r = await fetch('/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ login, password })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          toast(data.error || 'Nie udało się zalogować.', 'error');
+          return;
+        }
+        setToken(data.token);
+        setUser(data.user);
+        updateAuthUI();
+        closeAuthModal();
+        toast('Zalogowano.', 'ok');
+        load();
+      } catch {
+        toast('Błąd sieci podczas logowania.', 'error');
+      }
+    });
+  }
+
+  if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const login = document.getElementById('registerLogin').value;
+      const password = document.getElementById('registerPassword').value;
+      try {
+        const r = await fetch('/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ login, password })
+        });
+        const data = await r.json().catch(() => ({}));
+        if (!r.ok) {
+          toast(data.error || 'Rejestracja nie powiodła się.', 'error');
+          return;
+        }
+        setToken(data.token);
+        setUser(data.user);
+        updateAuthUI();
+        closeAuthModal();
+        toast('Konto utworzone i zalogowano.', 'ok');
+        load();
+      } catch {
+        toast('Błąd sieci podczas rejestracji.', 'error');
+      }
+    });
+  }
 });
+
+
 
 // =================== Модалка книги =======================
 function openModal(book) {
@@ -266,7 +673,7 @@ document.addEventListener('click', async (e) => {
   // Опис
   if (btn.classList.contains('menu-open')) {
     const id = btn.dataset.id;
-    const r = await fetch(`${API}/${id}`);
+    const r = await apiFetch(`${API}/${id}`);
     const book = await r.json();
     openModal(book);
     btn.closest('.kebab')?.classList.remove('open');
@@ -277,7 +684,7 @@ document.addEventListener('click', async (e) => {
   // Редагувати
   if (btn.classList.contains('menu-edit')) {
     const id = btn.dataset.id;
-    const r = await fetch(`${API}/${id}`); const book = await r.json();
+    const r = await apiFetch(`${API}/${id}`); const book = await r.json();
     document.getElementById('addTitle').value = book.tytul || '';
     document.getElementById('addAuthor').value = book.autor || '';
     document.getElementById('addPages').value = book.kilkist_storinyok || '';
@@ -296,7 +703,7 @@ document.addEventListener('click', async (e) => {
   if (btn.classList.contains('menu-del')) {
     const id = btn.dataset.id;
     if (!confirm('Видалити книгу?')) return;
-    const r = await fetch(`${API}/${id}`, { method: 'DELETE' });
+    const r = await apiFetch(`${API}/${id}`, { method: 'DELETE' });
     if (r.status === 204) {
       BOOKS = BOOKS.filter(x => String(x.id) !== String(id));
       applyFilters();
@@ -326,9 +733,9 @@ document.addEventListener('click', async (e) => {
   if (btn.classList.contains('menu-mark-read') || btn.classList.contains('menu-mark-plan')) {
     const id = btn.dataset.id;
     const status = btn.classList.contains('menu-mark-read') ? 'PROCHYTANA' : 'PLANUYU';
-    const r1 = await fetch(`${API}/${id}`); const book = await r1.json();
+    const r1 = await apiFetch(`${API}/${id}`); const book = await r1.json();
     const payload = { tytul: book.tytul, autor: book.autor, kilkist_storinyok: book.kilkist_storinyok, status };
-    const r2 = await fetch(`${API}/${id}`, {
+    const r2 = await apiFetch(`${API}/${id}`, {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
@@ -378,9 +785,9 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
   const editId = document.getElementById('addModal').dataset.editId;
   let r;
   if (editId) {
-    r = await fetch(`${API}/${editId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    r = await apiFetch(`${API}/${editId}`, { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   } else {
-    r = await fetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+    r = await apiFetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   }
   if (r.ok) { closeAdd(); await load(); } else { alert('Помилка збереження'); }
 });
@@ -401,9 +808,9 @@ document.getElementById('importBtn')?.addEventListener('click', async () => {
   const q = prompt('Введіть назву книги (і, за бажанням, автора через тире):');
   if (!q) return;
   const p = q.split('—').map(x => x.trim());
-  // Спробувати серверний fetch-list
+  // Spróbuj po stronie serwera fetch-list
   try {
-    const r = await fetch(`${API}/fetch-list`, {
+    const r = await apiFetch(`${API}/fetch-list`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify([{ title: p[0] || '', author: p[1] || '' }])
     });
@@ -415,7 +822,7 @@ document.getElementById('importBtn')?.addEventListener('click', async () => {
     const js = await rq.json();
     const it = js?.items?.[0];
     if (it) {
-      await fetch(API, {
+      await apiFetch(API, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           tytul: it.title || p[0] || '',
@@ -447,7 +854,7 @@ document.getElementById('importDo')?.addEventListener('click', async () => {
     };
   });
   try {
-    await fetch(`${API}/bulk`, {
+    await apiFetch(`${API}/bulk`, {
       method: 'POST', headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ books: items })
     });
@@ -463,7 +870,7 @@ async function fetchCover(title, author, isbn) {
   if (title) u.searchParams.set('title', title);
   if (author) u.searchParams.set('author', author);
   try {
-    const r = await fetch(u.toString(), { cache: 'no-store' });
+    const r = await apiFetch(u.toString(), { cache: 'no-store' });
     if (!r.ok) return null;
     const j = await r.json();
     return j?.url || null;
@@ -512,7 +919,7 @@ document.getElementById('enrichBtn')?.addEventListener('click', async () => {
     try { url = await fetchCover(b.tytul, b.autor, b.isbn); } catch {}
     if (url) {
       try {
-        await fetch(`${API}/${b.id}`, {
+        await apiFetch(`${API}/${b.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -557,49 +964,113 @@ document.addEventListener('click', (e) => {
 // ESC → закрити модалки
 document.getElementById('addModalBackdrop')?.addEventListener('click', closeAdd);
 document.getElementById('importModalBackdrop')?.addEventListener('click', closeImport);
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeAdd(); closeImport(); closeModal(); } });
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { closeAdd(); closeImport(); closeModal();
+ } });
+
+ // -------------------- Authors modal ---------------------
+function openAuthorsModal() {
+  const authorsMap = {};
+  BOOKS.forEach((b) => {
+    const name = (b.autor || '—').trim();
+    if (!name) return;
+    authorsMap[name] = (authorsMap[name] || 0) + 1;
+  });
+
+  const names = Object.keys(authorsMap).sort((a, b) =>
+    a.localeCompare(b, currentLang === 'pl' ? 'pl' : 'uk')
+  );
+
+  const backdrop = document.createElement('div');
+  backdrop.className = 'modal-backdrop';
+  backdrop.id = 'authorsBackdrop';
+
+  const modal = document.createElement('div');
+  modal.className = 'modal authors-modal';
+  modal.id = 'authorsModal';
+
+  let inner = `
+    <div class="modal-card modal-card--authors">
+      <button class="modal-close" type="button" id="authorsClose" aria-label="Close">✕</button>
+      <div class="modal-content">
+        <h3>${t ? t('authors.title', 'Автори') : 'Автори'}</h3>
+        <p class="muted">
+          ${t ? t('authors.subtitle', 'Список унікальних авторів та кількість книжок у твоїй бібліотеці.') :
+               'Список унікальних авторів та кількість книжок у твоїй бібліотеці.'}
+        </p>
+        <div class="authors-grid">
+  `;
+
+  if (names.length) {
+    names.forEach((name) => {
+      inner += `
+          <div class="authors-grid__row">
+            <span class="authors-grid__name">${name}</span>
+            <span class="authors-grid__count">${authorsMap[name]}</span>
+          </div>`;
+    });
+  } else {
+    inner += `
+          <div class="muted" style="padding-top:8px;">
+            ${t ? t('authors.empty', 'Ще немає жодної книги, щоб показати авторів.') :
+                 'Ще немає жодної книги, щоб показати авторів.'}
+          </div>`;
+  }
+
+  inner += `
+        </div>
+      </div>
+    </div>
+  `;
+
+  modal.innerHTML = inner;
+
+  function closeAuthors() {
+    backdrop.remove();
+    modal.remove();
+    document.body.classList.remove('modal-open');
+  }
+
+  backdrop.addEventListener('click', closeAuthors);
+  modal.querySelector('#authorsClose')?.addEventListener('click', closeAuthors);
+  document.addEventListener('keydown', function escHandler(e) {
+    if (e.key === 'Escape') {
+      closeAuthors();
+      document.removeEventListener('keydown', escHandler);
+    }
+  });
+
+  document.body.appendChild(backdrop);
+  document.body.appendChild(modal);
+  document.body.classList.add('modal-open');
+}
+
 
 // Навігація в топбарі
-document.querySelectorAll('.nav .nav__link').forEach((link, idx) => {
+document.querySelectorAll('.nav .nav__link').forEach((link) => {
   link.addEventListener('click', () => {
     document.querySelectorAll('.nav .nav__link').forEach(x => x.classList.remove('active'));
     link.classList.add('active');
-    if (idx === 0) {
+
+    const view = link.dataset.view || 'catalog';
+
+    if (view === 'catalog') {
       document.getElementById('searchInput').value = '';
       document.getElementById('statusSelect').value = '';
       applyFilters();
-    } else if (idx === 1) {
-      // швидкий список авторів
-      const authors = {};
-      BOOKS.forEach(b => { const a = b.autor || '—'; authors[a] = (authors[a] || 0) + 1; });
-      let html = '<div class="modal-card" style="grid-template-columns:1fr;"><button id="authorsClose" class="btn ghost small-x">✕</button><div class="modal-content"><h3>Автори</h3><ul>';
-      Object.keys(authors).sort((a, b) => a.localeCompare(b, 'uk'))
-        .forEach(a => { html += `<li style="margin:6px 0;display:flex;justify-content:space-between;"><span>${a}</span><span class="muted">${authors[a]}</span></li>`; });
-      html += '</ul></div></div>';
-      const m = document.createElement('div'); m.className = 'modal'; m.id = 'authorsModal'; m.innerHTML = html;
-      const bd = document.createElement('div'); bd.className = 'modal-backdrop'; bd.id = 'authorsBackdrop';
-      document.body.appendChild(bd); document.body.appendChild(m);
-      function closeA(){ bd.remove(); m.remove(); }
-      bd.addEventListener('click', closeA);
-      m.querySelector('#authorsClose').addEventListener('click', closeA);
-    } else if (idx === 2) {
-      document.getElementById('statusSelect').value = 'PROCHYTANA'; applyFilters();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } else if (view === 'authors') {
+      openAuthorsModal();
     }
+    // view === 'favorites' ми вже обробляємо нижче в IIFE «Улюблене як окремий фільтр»
   });
 });
 
-// Надійні закриття Add-модалки
-(function () {
-  const closeBtns = [document.getElementById('addClose'), document.getElementById('addCancel')];
-  closeBtns.forEach(b => b && b.addEventListener('click', (ev) => { ev.preventDefault(); closeAdd(); }));
-  document.getElementById('addModalBackdrop')?.addEventListener('click', closeAdd);
-})();
 
 // «Улюблене» як окремий фільтр
 (function () {
   const links = document.querySelectorAll('.nav .nav__link');
   links.forEach((link) => {
-    if (link.textContent.trim() === 'Улюблене') {
+    if (link.dataset.view === 'favorites') {
       link.addEventListener('click', () => {
         document.getElementById('searchInput').value = '';
         document.getElementById('statusSelect').value = '';
@@ -631,7 +1102,7 @@ async function ensureCover(b) {
         box.appendChild(createCoverImg(b.cover_url));
       }
       try {
-        await fetch(`${API}/${b.id}`, {
+        await apiFetch(`${API}/${b.id}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -646,35 +1117,83 @@ async function ensureCover(b) {
 
 // ========= Зовнішній пошук (через бекенд-проксі) =========
 async function extSearch() {
-  const q = document.getElementById('extQuery')?.value.trim();
+  const qEl = document.getElementById('extQuery');
+  const q = qEl?.value.trim();
   if (!q) return;
+
   const box = document.getElementById('extResults');
+  const grid = document.getElementById('booksGrid');
   if (!box) return;
 
-  box.innerHTML = '<div class="muted">Шукаю…</div>';
+  // очищаємо власні карточки, щоб показати тільки пропозиції
+  if (grid) {
+    grid.innerHTML = '';
+  }
+
+  box.innerHTML = `<div class="muted">${t('ext.searching', 'Шукаю…')}</div>`;
 
   let data = { items: [] };
   try {
     const r = await fetch(`/api/ext/search?q=${encodeURIComponent(q)}`, { cache: 'no-store' });
     if (r.ok) data = await r.json();
-  } catch {}
+  } catch (e) {
+    console.error('[extSearch] request failed', e);
+  }
 
   const uniq = new Map();
   for (const it of (data.items || [])) {
     const key = `${(it.title || '').toLowerCase()}|${(it.author || '').toLowerCase()}`;
     if (!uniq.has(key)) uniq.set(key, it);
   }
-  const items = [...uniq.values()].slice(0, 20);
 
-  if (!items.length) { box.innerHTML = '<div class="muted">Нічого не знайдено.</div>'; return; }
+  let items = [...uniq.values()];
 
-  box.innerHTML = '';
+  // 1) Перевага назвам кирилицею (ймовірно українські / російські видання, напр. Yakaboo)
+  const cyr = items.filter((it) =>
+    /[А-Яа-яЁёЇїІіЄєҐґ]/.test(it.title || '')
+  );
+  if (cyr.length) {
+    items = cyr;
+  }
+
+  // 2) Викидаємо очевидні "плакати" / "poster"
+  items = items.filter((it) => {
+    const t = (it.title || '').toLowerCase();
+    return !t.includes('плакат') && !t.includes('poster');
+  });
+
+  // 3) Не більше 20 результатів
+  items = items.slice(0, 20);
+
+
+  if (!items.length) {
+    box.innerHTML = `<div class="muted">${t('ext.nothing', 'Нічого не знайдено.')}</div>`;
+    return;
+  }
+
+  box.innerHTML = ''; // якщо хочеш — можеш додати заголовок тут
+
   items.forEach((it, idx) => {
-    const cover = it.cover || null;
     const fallback = genCoverSVG(it.title, it.author);
-
     const card = document.createElement('div');
     card.className = 'ext-card';
+
+    const srcLabel =
+      it.src === 'YB'
+        ? 'Yakaboo'
+        : it.src === 'OL'
+        ? 'OpenLibrary'
+        : it.src === 'GB'
+        ? 'Google Books'
+        : '';
+    const url = it.url ? esc(it.url) : '';
+    const label = srcLabel ? esc(srcLabel) : '';
+    const linkHtml = url
+      ? `<a href="${url}" class="ext-link" target="_blank" rel="noopener noreferrer">${label}</a>`
+      : '';
+
+    const priceText = it.price ? esc(it.price) : '';
+
     card.innerHTML = `
       <div class="ext-cover">
         <div class="cover-fallback" style="background-image:url('${esc(fallback)}')"></div>
@@ -682,18 +1201,30 @@ async function extSearch() {
       <div class="ext-body">
         <div class="ext-title">${esc(it.title || '—')}</div>
         <div class="ext-meta">${esc(it.author || '')}</div>
-        <div class="ext-meta">${it.pages || 0} стор.</div>
-        <button class="btn small" data-ext="${idx}">Додати</button>
-      </div>`;
-    if (cover) card.querySelector('.ext-cover').appendChild(createCoverImg(cover));
+        <div class="ext-meta">
+          ${it.pages || 0} ${t('books.pages_short', 'стор.')}
+          ${priceText ? ` • ${priceText}` : ''}
+        </div>
+        <div class="ext-meta">${linkHtml}</div>
+        <button class="btn small" data-ext="${idx}">
+          ${t('ext.add_btn', 'Додати')}
+        </button>
+      </div>
+    `;
+
+    if (it.cover) {
+      card.querySelector('.ext-cover')?.appendChild(createCoverImg(it.cover));
+    }
+
     box.appendChild(card);
   });
 
-  box.querySelectorAll('button[data-ext]').forEach(btn => {
+  // додати в свою бібліотеку
+  box.querySelectorAll('button[data-ext]').forEach((btn) => {
     btn.addEventListener('click', async () => {
       const it = items[Number(btn.getAttribute('data-ext'))];
       try {
-        await fetch('/api/books', {
+        await apiFetch('/api/books', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -706,11 +1237,17 @@ async function extSearch() {
             description: it.description
           })
         });
-        toast('Книгу додано', 'ok');
+        toast(t('toast.book_added', 'Книгу додано'), 'ok');
         await load();
-      } catch { toast('Не вдалося додати', 'err'); }
+      } catch {
+        toast(t('toast.book_add_failed', 'Не вдалося додати'), 'err');
+      }
     });
   });
 }
+
+// підключення подій до поля/кнопки
 document.getElementById('extSearchBtn')?.addEventListener('click', extSearch);
-document.getElementById('extQuery')?.addEventListener('keydown', (e) => { if (e.key === 'Enter') extSearch(); });
+document.getElementById('extQuery')?.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') extSearch();
+});

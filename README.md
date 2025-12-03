@@ -32,4 +32,4 @@ This project was flattened to a single folder with only essentials:
 - `migrations/sqlite/` (schema changes; idempotent)
 - `seeds/` (initial data)
 - `data/` (SQLite file lives here)
-- `START_HERE.bat` / `run_all.bat` (Windows launchers)
+- `run_all.bat` (Windows launchers)

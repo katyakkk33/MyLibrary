@@ -1,13 +1,11 @@
 <!DOCTYPE html>
-<html lang="uk">
+<html lang="ua">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 
   <title>MyLibrary</title>
 
-  <!-- CSP: дозволяємо картинки з https і data:, запити на бек і https,
-       стилі з інлайном (бо в HTML є style="…"), заборона інлайнових скриптів -->
   <meta http-equiv="Content-Security-Policy"
         content="
           default-src 'self';
@@ -26,55 +24,121 @@
 </head>
 <body>
   <!-- Top bar -->
-  <header class="topbar">
-    <div class="container topbar__row">
-      <div class="brand">
-        <div class="brand__logo">📚</div>
-        <div class="brand__name">MyLibrary</div>
-      </div>
-      <nav class="nav">
-        <a class="nav__link active">Каталог</a>
-        <a class="nav__link">Автори</a>
-        <a class="nav__link">Улюблене</a>
-      </nav>
-      <div class="profile">
-        <button id="enrichBtn" class="btn ghost small">Збагачення</button>
-        <button id="themeToggle" class="btn small">Тема</button>
-      </div>
+<header class="topbar">
+  <div class="container topbar__row">
+    
+    <div class="brand">
+      <div class="brand__logo">📚</div>
+      <div class="brand__name">MyLibrary</div>
     </div>
-  </header>
+
+    <nav class="nav">
+      <a class="nav__link active" data-view="catalog" data-i18n="nav.catalog">Каталог</a>
+      <a class="nav__link" data-view="authors" data-i18n="nav.authors">Автори</a>
+      <a class="nav__link" data-view="favorites" data-i18n="nav.favorites">Улюблене</a>
+    </nav>
+
+    <div class="profile">
+      <div class="lang-switch">
+        <button type="button" class="btn ghost small lang-btn" data-lang="ua">UA</button>
+        <button type="button" class="btn ghost small lang-btn" data-lang="pl">PL</button>
+      </div>
+
+      <button id="enrichBtn" class="btn ghost small" data-i18n="btn.enrich">Збагачення</button>
+      <button id="themeToggle" class="btn small" data-i18n="btn.theme">Тема</button>
+      <button id="loginBtn" class="btn small" data-i18n="btn.login">Zaloguj</button>
+      <button id="logoutBtn" class="btn small hidden" data-i18n="btn.logout">Wyloguj</button>
+    </div>
+
+  </div>
+</header>
+
+  <!-- Public hero / home section -->
+  <section class="hero">
+    <div class="container">
+     <h1 data-i18n="intro.title">MyLibrary – Twoja prywatna biblioteka online</h1>
+      <p data-i18n="intro.p1">
+        Ta aplikacja pozwala zapisać przeczytane i planowane książki.
+      </p>
+      <p class="muted" data-i18n="intro.p2">
+        Lista książek i akcje CRUD są widoczne dopiero po zalogowaniu.
+      </p>
+    </div>
+  </section>
 
   <!-- Filters -->
-  <section class="filters">
-    <div class="container filters__row">
-      <div class="filters__left">
-        <div class="input search">
-          <input id="searchInput" type="text" placeholder="Пошук по назві або автору..."/>
-          <span class="search__icon">🔍</span>
-        </div>
-      </div>
-      <div class="filters__right">
-        <select id="statusSelect" class="select">
-          <option value="">Статус: Усі</option>
-          <option value="PROCHYTANA">Прочитано</option>
-          <option value="PLANUYU">Планую</option>
-        </select>
-        <select id="sortSelect" class="select">
-          <option value="-date">Сортування: Нові</option>
-          <option value="+date">Сортування: Старі</option>
-          <option value="+title">Назва A–Я</option>
-          <option value="-title">Назва Я–A</option>
-        </select>
-        <button id="addBtn" class="btn primary small">Додати книгу</button>
-        <button id="importBtn" class="btn small">Імпорт</button>
-      </div>
+<section class="filters">
+  <div class="container filters__row">
+    
+    <!-- Пошук -->
+<div class="filters__left">
+  <!-- звичайний пошук по своїй бібліотеці -->
+  <div class="input search">
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Пошук по назві або автору..."
+      data-i18n-placeholder="filters.search"
+    />
+    <span class="search__icon">🔍</span>
+  </div>
+
+  <!-- пошук у відкритих базах, маленький блок праворуч -->
+  <div class="ext-inline">
+    <input
+      id="extQuery"
+      type="text"
+      class="ext-input"
+      placeholder="Пошук у відкритих базах"
+      data-i18n-placeholder="ext.search_placeholder"
+    />
+    <button
+      id="extSearchBtn"
+      class="btn ghost small"
+      data-i18n="ext.search_btn"
+    >
+      Знайти в базах
+    </button>
+  </div>
+</div>
+
+    <!-- Фільтри та кнопки -->
+    <div class="filters__right">
+      
+      <!-- Фільтр статусу -->
+      <select id="statusSelect" class="select">
+        <option value="" data-i18n="filters.status_all">Статус: Усі</option>
+        <option value="PROCHYTANA" data-i18n="filters.status_read">Прочитано</option>
+        <option value="PLANUYU" data-i18n="filters.status_plan">Планую</option>
+      </select>
+
+      <!-- Сортування -->
+      <select id="sortSelect" class="select">
+        <option value="-date" data-i18n="filters.sort_new">Сортування: Нові</option>
+        <option value="+date" data-i18n="filters.sort_old">Сортування: Старі</option>
+        <option value="+title" data-i18n="filters.sort_title_az">Назва A–Я</option>
+        <option value="-title" data-i18n="filters.sort_title_za">Назва Я–A</option>
+      </select>
+
+      <!-- Дії -->
+      <button id="addBtn" class="btn primary small" data-i18n="btn.add_book">Додати книгу</button>
+      <button id="importBtn" class="btn small" data-i18n="btn.import">Імпорт</button>
     </div>
-  </section>
+
+  </div>
+</section>
+
 
   <!-- Counters -->
-  <section class="container counters">
-    Всього: <span id="statTotal">0</span> · Прочитано: <span id="statRead">0</span> · Планую: <span id="statPlan">0</span>
-  </section>
+ <section class="container counters">
+  <span data-i18n="counters.total">Всього:</span>
+  <span id="statTotal">0</span> ·
+  <span data-i18n="counters.read">Прочитано:</span>
+  <span id="statRead">0</span> ·
+  <span data-i18n="counters.plan">Планую:</span>
+  <span id="statPlan">0</span>
+ </section>
+
 
   <!-- Grid -->
   <main class="container">
@@ -82,17 +146,14 @@
     <p id="loadingMessage" class="muted">Завантаження…</p>
   </main>
 
-  <!-- External search (через бекенд-проксі /api/ext/search) -->
-  <section id="externalSearch" class="container" style="margin-top:20px;">
-    <div class="ext-box">
-      <h3 style="margin:0 0 8px 0;">Пошук у відкритих базах</h3>
-      <div class="ext-row">
-        <input id="extQuery" type="text" class="ext-input" placeholder="Введіть назву книги або Назва — Автор"/>
-        <button id="extSearchBtn" class="btn primary">Знайти</button>
-      </div>
-      <div id="extResults" class="ext-grid"></div>
-    </div>
-  </section>
+  <!-- External search results -->
+<section id="externalSearch" class="container" style="margin-top:20px;">
+  <div class="ext-box">
+    <h3 class="ext-title" data-i18n="ext.title">Пошук у відкритих базах</h3>
+    <div id="extResults" class="ext-grid"></div>
+  </div>
+</section>
+
 
   <!-- Book modal -->
   <div id="modalBackdrop" class="modal-backdrop hidden"></div>
@@ -147,6 +208,44 @@
     </div>
   </div>
 
+    <!-- Auth Modal -->
+  <div id="authModalBackdrop" class="modal-backdrop hidden"></div>
+  <div id="authModal" class="modal hidden">
+    <div class="modal-card" style="grid-template-columns:1fr;">
+      <button id="authClose" class="btn ghost small-x">✕</button>
+      <div class="modal-content">
+        <h3>Logowanie / Rejestracja</h3>
+
+        <div class="tabs" style="display:flex;gap:8px;margin-bottom:12px;">
+          <button id="tabLogin" class="btn small primary">Logowanie</button>
+          <button id="tabRegister" class="btn small">Rejestracja</button>
+        </div>
+
+        <form id="loginForm" class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;">
+          <label>Login
+            <input type="text" id="loginLogin" required />
+          </label>
+          <label>Hasło
+            <input type="password" id="loginPassword" required />
+          </label>
+          <button class="btn primary" type="submit">Zaloguj</button>
+        </form>
+
+        <form id="registerForm" class="form-grid hidden" style="grid-template-columns:1fr;">
+          <label>Login
+            <input type="text" id="registerLogin" required />
+          </label>
+          <label>Hasło (min. 6 znaków, litera + cyfra)
+            <input type="password" id="registerPassword" required />
+          </label>
+          <button class="btn" type="submit">Zarejestruj</button>
+        </form>
+
+      </div>
+    </div>
+  </div>
+
+
   <!-- Import Modal -->
   <div id="importModalBackdrop" class="modal-backdrop hidden"></div>
   <div id="importModal" class="modal hidden">
@@ -169,6 +268,6 @@
   <input id="hiddenFileInput" type="file" accept="image/png,image/jpeg,image/jpg,image/svg+xml" style="display:none" />
 
   <!-- ВАЖЛИВО: зовнішній скрипт, без інлайнових обробників; defer щоб DOM уже існував -->
-  <script src="script.js" defer></script>
+  <script type="module"  src="script.js" defer></script>
 </body>
 </html>

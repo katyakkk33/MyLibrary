@@ -4,9 +4,18 @@ dist/
 *.log
 logs/
 
+# Local env (never commit secrets)
+.env
+
 # SQLite тимчасові файли
 *.sqlite-wal
 *.sqlite-shm
+*.db-wal
+*.db-shm
+*.db-journal
+
+# Local installers
+nvm-setup.exe
 
 # OS / Editor
 .DS_Store

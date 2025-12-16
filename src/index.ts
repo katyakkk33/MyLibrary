@@ -86,8 +86,8 @@ app.use(express.json({ limit: JSON_LIMIT }));
 
 /* ----------------- migrations ----------------- */
 try {
-  const dataDir = path.resolve(__dirname, '..', 'data');
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+  const fullDbPath = path.isAbsolute(DB_FILE) ? DB_FILE : path.resolve(process.cwd(), DB_FILE);
+  fs.mkdirSync(path.dirname(fullDbPath), { recursive: true });
 
   runMigrations();
   migrateLegacyIfNeeded();      // імпорт зі старих таблиць у books, якщо books порожня
@@ -98,7 +98,7 @@ try {
 
 /* ----------------- config log ----------------- */
 try {
-  const fullDbPath = DB_FILE.startsWith('.') ? path.resolve(__dirname, '..', DB_FILE) : DB_FILE;
+  const fullDbPath = path.isAbsolute(DB_FILE) ? DB_FILE : path.resolve(process.cwd(), DB_FILE);
   console.log('Config:', {
     PORT,
     DB_FILE: fullDbPath,

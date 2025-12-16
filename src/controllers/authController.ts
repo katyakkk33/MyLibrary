@@ -10,7 +10,7 @@ function toPublicUser(u: User): PublicUser {
   return { id, login, role, created_at };
 }
 
-export async function register(req: Request, res: Response) {
+export function register(req: Request, res: Response) {
   const { login, password } = normalizeUserBody(req.body);
 
   if (!login) {
@@ -48,7 +48,7 @@ export async function register(req: Request, res: Response) {
   });
 }
 
-export async function login(req: Request, res: Response) {
+export function login(req: Request, res: Response) {
   const { login, password } = normalizeUserBody(req.body);
 
   if (!login || !password) {

@@ -16,6 +16,22 @@ Create a `.env` (see `.env.example`) to control:
 
 - `GET /healthz` returns `{ ok: true }` when the server is up.
 
+## Deploy to Render (via GitHub)
+
+1) On Render: **New +** → **Web Service** → connect your GitHub repo `katyakkk33/MyLibrary`.
+2) Choose branch `main` and set:
+	- **Build Command**: `npm ci && npm run build`
+	- **Start Command**: `npm start`
+3) Add **Environment Variables** in Render:
+	- `JWT_SECRET` (required)
+	- `ALLOWED_ORIGINS` = your Render URL, e.g. `https://your-service.onrender.com`
+	- `DB_FILE` = `/var/data/books.db` (recommended for SQLite)
+	- Optional: `AUTO_ENRICH=0`, `DEBUG_DB=0`
+4) Add a **Persistent Disk** (recommended for SQLite):
+	- Mount path: `/var/data`
+	- Size: 1 GB (or more)
+5) Deploy, then open `https://your-service.onrender.com/healthz`.
+
 
 ## Notes (Refactor)
 - Added helmet, tighter CORS, rate limiting on `/api/books`.

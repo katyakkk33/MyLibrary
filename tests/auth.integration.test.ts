@@ -1,13 +1,11 @@
 import request from 'supertest';
 import express from 'express';
 
-process.env.DB_FILE = ':memory:';
-process.env.JWT_SECRET = 'test-secret';
-
-import { runMigrations } from '../src/db';
-import bookRoutes from '../src/routes/bookRoutes';
-import authRoutes from '../src/routes/authRoutes';
-import { authMiddleware } from '../src/middleware/auth';
+let runMigrations: (() => void) | undefined;
+let closeDb: (() => void) | undefined;
+let bookRoutes: any;
+let authRoutes: any;
+let authMiddleware: any;
 
 function createApp() {
   const app = express();
@@ -17,8 +15,25 @@ function createApp() {
   return app;
 }
 
-beforeAll(() => {
+beforeAll(async () => {
+  process.env.DB_FILE = ':memory:';
+  process.env.JWT_SECRET = 'test-secret';
+
+  jest.resetModules();
+
+  const dbMod = await import('../src/db');
+  runMigrations = dbMod.runMigrations;
+  closeDb = (dbMod as any).closeDb;
+
+  bookRoutes = (await import('../src/routes/bookRoutes')).default;
+  authRoutes = (await import('../src/routes/authRoutes')).default;
+  authMiddleware = (await import('../src/middleware/auth')).authMiddleware;
+
   runMigrations();
+});
+
+afterAll(() => {
+  try { closeDb?.(); } catch { /* no-op */ }
 });
 
 describe('Auth integration', () => {

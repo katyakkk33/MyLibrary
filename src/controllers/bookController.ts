@@ -18,7 +18,7 @@ const rowToBook = (r: any): Book => ({
 });
 
 
-export async function listBooks(req: Request, res: Response) {
+export function listBooks(req: Request, res: Response) {
   const userId = req.user?.id;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -49,7 +49,7 @@ export async function listBooks(req: Request, res: Response) {
 }
 
 
-export async function getBookById(req: Request, res: Response) {
+export function getBookById(req: Request, res: Response) {
   const userId = req.user?.id;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -62,7 +62,7 @@ export async function getBookById(req: Request, res: Response) {
 }
 
 
-export async function createBook(req: Request, res: Response) {
+export function createBook(req: Request, res: Response) {
   const userId = req.user?.id;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -88,7 +88,7 @@ export async function createBook(req: Request, res: Response) {
   }
 }
 
-export async function updateBook(req: Request, res: Response) {
+export function updateBook(req: Request, res: Response) {
   const userId = req.user?.id;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -130,7 +130,7 @@ export async function updateBook(req: Request, res: Response) {
 }
 
 
-export async function deleteBook(req: Request, res: Response) {
+export function deleteBook(req: Request, res: Response) {
   const userId = req.user?.id;
   if (!userId) {
     return res.status(401).json({ error: 'Unauthorized' });
@@ -143,7 +143,7 @@ export async function deleteBook(req: Request, res: Response) {
 }
 
 
-export async function bulkCreate(req: Request, res: Response) {
+export function bulkCreate(req: Request, res: Response) {
   // 1. Перевірка авторизації
   const userId = req.user?.id;
   if (!userId) {

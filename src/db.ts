@@ -2,7 +2,19 @@ import Database from 'better-sqlite3';
 import fs from 'fs';
 import path from 'path';
 
-const DB_FILE = process.env.DB_FILE || path.resolve(__dirname, '..', 'data', 'books.db');
+function resolveDbFilePath(dbFile: string): string {
+  const raw = (dbFile || '').trim();
+  if (raw === ':memory:' || raw.startsWith('file:')) return raw;
+  const fallback = path.resolve(__dirname, '..', 'data', 'books.db');
+  const p = raw || fallback;
+  return path.isAbsolute(p) ? p : path.resolve(process.cwd(), p);
+}
+
+const DB_FILE = resolveDbFilePath(process.env.DB_FILE || '');
+if (DB_FILE !== ':memory:' && !DB_FILE.startsWith('file:')) {
+  fs.mkdirSync(path.dirname(DB_FILE), { recursive: true });
+}
+
 const db = new Database(DB_FILE);
 
 // Безпечні pragma
@@ -69,6 +81,10 @@ export function get<T = Row>(sql: string, params: any[] = []): T | undefined {
 export function run(sql: string, params: any[] = []) {
   const info = db.prepare(sql).run(...params);
   return { changes: info.changes, lastInsertRowid: Number(info.lastInsertRowid) };
+}
+
+export function closeDb() {
+  db.close();
 }
 
 export default db;

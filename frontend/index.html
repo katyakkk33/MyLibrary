@@ -176,35 +176,35 @@
     <div class="modal-card" style="grid-template-columns:1fr;">
       <button id="addClose" class="btn ghost small-x">✕</button>
       <div class="modal-content">
-        <h3>Додати книгу</h3>
+        <h3 data-i18n="add.title">Додати книгу</h3>
         <form id="addForm" class="form-grid">
-          <label>Назва
+          <label><span data-i18n="add.label.title">Назва</span>
             <input type="text" id="addTitle" required />
           </label>
-          <label>Автор
+          <label><span data-i18n="add.label.author">Автор</span>
             <input type="text" id="addAuthor" required />
           </label>
-          <label>Сторінок
+          <label><span data-i18n="add.label.pages">Сторінок</span>
             <input type="number" id="addPages" min="1" required />
           </label>
-          <label>Статус
+          <label><span data-i18n="add.label.status">Статус</span>
             <select id="addStatus">
-              <option value="PLANUYU">Планую</option>
-              <option value="PROCHYTANA">Прочитано</option>
+              <option value="PLANUYU" data-i18n="add.status.plan">Планую</option>
+              <option value="PROCHYTANA" data-i18n="add.status.read">Прочитано</option>
             </select>
           </label>
-          <label>ISBN (необов'язково)
+          <label><span data-i18n="add.label.isbn">ISBN (необов'язково)</span>
             <input type="text" id="addIsbn" />
           </label>
-          <label>Посилання на обкладинку (необов'язково)
+          <label><span data-i18n="add.label.cover">Посилання на обкладинку (необов'язково)</span>
             <input type="url" id="addCover" />
           </label>
-          <label>Opis / notatki (opcjonalnie)
-            <textarea id="addOpis_67664" rows="4" placeholder="Krótki opis albo Twoje notatki..."></textarea>
+          <label><span data-i18n="add.label.opis_67664">Opis / notatki (opcjonalnie)</span>
+            <textarea id="addOpis_67664" rows="4" placeholder="Krótki opis albo Twoje notatki..." data-i18n-placeholder="add.placeholder.opis_67664"></textarea>
           </label>
           <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
-            <button type="button" class="btn" id="addCancel">Скасувати</button>
-            <button type="submit" class="btn primary">Зберегти</button>
+            <button type="button" class="btn" id="addCancel" data-i18n="btn.cancel">Скасувати</button>
+            <button type="submit" class="btn primary" id="addSubmit" data-i18n="btn.add">Зберегти</button>
           </div>
         </form>
       </div>

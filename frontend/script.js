@@ -73,6 +73,25 @@ const I18N = {
     "toast.book_added": "Книгу додано",
     "toast.book_add_failed": "Не вдалося додати",
 
+    "btn.cancel": "Скасувати",
+    "btn.add": "Додати",
+    "btn.save": "Зберегти",
+
+    "add.title": "Додати книгу",
+    "add.label.title": "Назва",
+    "add.label.author": "Автор",
+    "add.label.pages": "Сторінок",
+    "add.label.status": "Статус",
+    "add.status.plan": "Планую",
+    "add.status.read": "Прочитано",
+    "add.label.isbn": "ISBN (необов'язково)",
+    "add.label.cover": "Посилання на обкладинку (необов'язково)",
+    "add.label.opis_67664": "Opis / notatki (opcjonalnie)",
+    "add.placeholder.opis_67664": "Короткий опис або твої нотатки...",
+
+    "books.pages_label": "Сторінок",
+    "books.no_description": "Опис відсутній.",
+
     "auth.login_required": "Щоб побачити свою бібліотеку, спочатку увійдіть.",
 
     "authors.title": "Автори",
@@ -137,6 +156,25 @@ const I18N = {
 
     "toast.book_added": "Książka dodana",
     "toast.book_add_failed": "Nie udało się dodać",
+
+    "btn.cancel": "Anuluj",
+    "btn.add": "Dodaj",
+    "btn.save": "Zapisz",
+
+    "add.title": "Dodaj książkę",
+    "add.label.title": "Tytuł",
+    "add.label.author": "Autor",
+    "add.label.pages": "Stron",
+    "add.label.status": "Status",
+    "add.status.plan": "Planuję",
+    "add.status.read": "Przeczytane",
+    "add.label.isbn": "ISBN (opcjonalnie)",
+    "add.label.cover": "Link do okładki (opcjonalnie)",
+    "add.label.opis_67664": "Opis / notatki (opcjonalnie)",
+    "add.placeholder.opis_67664": "Krótki opis albo Twoje notatki...",
+
+    "books.pages_label": "Stron",
+    "books.no_description": "Brak opisu.",
 
     "auth.login_required": "Aby zobaczyć swoją bibliotekę, najpierw się zaloguj.",
 
@@ -639,8 +677,8 @@ function openModal(book) {
   document.getElementById('modalTitle').textContent = book.tytul || 'Без назви';
   document.getElementById('modalAuthor').textContent = book.autor || '';
   document.getElementById('modalMeta').textContent =
-    `Сторінок: ${book.kilkist_storinyok || 0}${book.isbn ? ` • ISBN: ${book.isbn}` : ''}`;
-  document.getElementById('modalDesc').innerHTML = esc((book.opis_67664 || book.description) || 'Опис відсутній.');
+    `${t('books.pages_label', 'Сторінок')}: ${book.kilkist_storinyok || 0}${book.isbn ? ` • ISBN: ${book.isbn}` : ''}`;
+  document.getElementById('modalDesc').innerHTML = esc((book.opis_67664 || book.description) || t('books.no_description', 'Опис відсутній.'));
   document.getElementById('modalBackdrop').classList.remove('hidden');
   document.getElementById('bookModal').classList.remove('hidden');
 }
@@ -693,7 +731,7 @@ document.addEventListener('click', async (e) => {
     document.getElementById('addCover').value = book.cover_url || '';
     document.getElementById('addOpis_67664').value = (book.opis_67664 || book.description) || '';
     document.getElementById('addModal').dataset.editId = id;
-    document.querySelector('#addForm .primary').textContent = 'Зберегти';
+    setAddSubmitMode('edit');
     openAdd();
     btn.closest('.kebab')?.classList.remove('open');
     btn.closest('.card')?.classList.remove('menu-opened');
@@ -753,13 +791,21 @@ document.addEventListener('click', async (e) => {
 });
 
 // =================== Add book modal ======================
+function setAddSubmitMode(mode) {
+  const btn = document.getElementById('addSubmit');
+  if (!btn) return;
+  const key = mode === 'edit' ? 'btn.save' : 'btn.add';
+  btn.setAttribute('data-i18n', key);
+  btn.textContent = t(key, btn.textContent);
+}
+
 function openAdd() {
   document.getElementById('addModalBackdrop').classList.remove('hidden');
   document.getElementById('addModal').classList.remove('hidden');
 }
 function closeAdd() {
   document.getElementById('addModal').dataset.editId = '';
-  document.querySelector('#addForm .primary').textContent = 'Додати';
+  setAddSubmitMode('add');
   document.getElementById('addModalBackdrop').classList.add('hidden');
   document.getElementById('addModal').classList.add('hidden');
 }

@@ -955,7 +955,9 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
     status: document.getElementById('addStatus').value,
     isbn: document.getElementById('addIsbn').value.trim() || undefined,
     cover_url: document.getElementById('addCover').value.trim() || undefined,
-    opis_67664: document.getElementById('addOpis_67664').value.trim() || undefined
+    opis_67664: document.getElementById('addOpis_67664').value.trim() || undefined,
+    // Backward compat for older backend versions
+    description: document.getElementById('addOpis_67664').value.trim() || undefined
   };
   try {
     if (!payload.cover_url) {
@@ -970,7 +972,20 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
   } else {
     r = await apiFetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   }
-  if (r.ok) { closeAdd(); await load(); } else { alert(t('err.save_failed', 'Помилка збереження')); }
+  if (r.ok) {
+    closeAdd();
+    await load();
+    return;
+  }
+
+  // Show backend error details when available (422/409/401/etc.)
+  let msg = t('err.save_failed', 'Помилка збереження');
+  try {
+    const data = await r.json();
+    if (data?.error) msg = String(data.error);
+    else if (data?.message) msg = String(data.message);
+  } catch {}
+  alert(msg);
 });
 
 // =================== Import modal ========================
@@ -1012,7 +1027,8 @@ document.getElementById('importBtn')?.addEventListener('click', async () => {
           status: 'PLANUYU',
           isbn: it.isbn || undefined,
           cover_url: it.cover || undefined,
-          opis_67664: it.description || undefined
+          opis_67664: it.description || undefined,
+          description: it.description || undefined
         })
       });
       await load();
@@ -1415,7 +1431,8 @@ async function extSearch() {
             status: 'PLANUYU',
             isbn: it.isbn,
             cover_url: it.cover,
-            opis_67664: it.description
+            opis_67664: it.description,
+            description: it.description
           })
         });
         toast(t('toast.book_added', 'Книгу додано'), 'ok');

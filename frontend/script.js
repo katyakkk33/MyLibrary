@@ -76,7 +76,8 @@ const I18N = {
     "toast.book_added": "Книгу додано",
     "toast.book_add_failed": "Не вдалося додати",
 
-    "toast.logged_out": "Вийшли з системи.",
+    "confirm.delete_book": "Видалити книгу?",
+    "confirm.title": "Підтвердження",
     "toast.login_failed": "Не вдалося увійти.",
     "toast.login_network_error": "Помилка мережі під час входу.",
     "toast.logged_in": "Успішний вхід.",
@@ -93,6 +94,7 @@ const I18N = {
     "btn.cancel": "Скасувати",
     "btn.add": "Додати",
     "btn.save": "Зберегти",
+    "btn.ok": "OK",
 
     "add.title": "Додати книгу",
     "add.label.title": "Назва",
@@ -203,6 +205,7 @@ const I18N = {
     "toast.register_network_error": "Błąd sieci podczas rejestracji.",
     "toast.registered_logged_in": "Konto utworzone i zalogowano.",
 
+    "confirm.title": "Potwierdzenie",
     "confirm.delete_book": "Usunąć książkę?",
     "err.save_failed": "Błąd zapisu",
     "err.online_not_found": "Nie udało się znaleźć książki online",
@@ -212,6 +215,7 @@ const I18N = {
     "btn.cancel": "Anuluj",
     "btn.add": "Dodaj",
     "btn.save": "Zapisz",
+    "btn.ok": "OK",
 
     "add.title": "Dodaj książkę",
     "add.label.title": "Tytuł",
@@ -287,6 +291,64 @@ function applyI18nToDom() {
 function updateLangButtonsUI() {
   document.querySelectorAll(".lang-btn").forEach((btn) => {
     btn.classList.toggle("active", btn.dataset.lang === currentLang);
+  });
+}
+
+// ==================== Confirm modal =====================
+function confirmModal(message, { title } = {}) {
+  return new Promise((resolve) => {
+    const backdrop = document.createElement('div');
+    backdrop.className = 'modal-backdrop';
+
+    const modal = document.createElement('div');
+    modal.className = 'modal';
+
+    modal.innerHTML = `
+      <div class="modal-card" style="grid-template-columns:1fr; max-width:420px;">
+        <button class="btn ghost small-x" type="button" data-action="close">✕</button>
+        <div class="modal-content">
+          <h3 data-role="title"></h3>
+          <p class="muted" data-role="message" style="margin-top:8px;"></p>
+          <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+            <button type="button" class="btn" data-action="cancel"></button>
+            <button type="button" class="btn primary" data-action="ok"></button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const titleEl = modal.querySelector('[data-role="title"]');
+    const msgEl = modal.querySelector('[data-role="message"]');
+    const okBtn = modal.querySelector('[data-action="ok"]');
+    const cancelBtn = modal.querySelector('[data-action="cancel"]');
+    const closeBtn = modal.querySelector('[data-action="close"]');
+
+    if (titleEl) titleEl.textContent = title || t('confirm.title', 'Підтвердження');
+    if (msgEl) msgEl.textContent = message;
+    if (okBtn) okBtn.textContent = t('btn.ok', 'OK');
+    if (cancelBtn) cancelBtn.textContent = t('btn.cancel', 'Скасувати');
+
+    function cleanup(answer) {
+      backdrop.remove();
+      modal.remove();
+      document.body.classList.remove('modal-open');
+      document.removeEventListener('keydown', escHandler);
+      resolve(answer);
+    }
+
+    function escHandler(e) {
+      if (e.key === 'Escape') cleanup(false);
+    }
+
+    backdrop.addEventListener('click', () => cleanup(false));
+    okBtn?.addEventListener('click', () => cleanup(true));
+    cancelBtn?.addEventListener('click', () => cleanup(false));
+    closeBtn?.addEventListener('click', () => cleanup(false));
+    document.addEventListener('keydown', escHandler);
+
+    document.body.appendChild(backdrop);
+    document.body.appendChild(modal);
+    document.body.classList.add('modal-open');
   });
 }
 
@@ -780,7 +842,7 @@ document.addEventListener('click', async (e) => {
 
   // Опис
   if (btn.classList.contains('menu-open')) {
-    if (!confirm(t('confirm.delete_book', 'Видалити книгу?'))) return;
+    const id = btn.dataset.id;
     const r = await apiFetch(`${API}/${id}`);
     const book = await r.json();
     openModal(book);
@@ -811,7 +873,8 @@ document.addEventListener('click', async (e) => {
   // Видалити
   if (btn.classList.contains('menu-del')) {
     const id = btn.dataset.id;
-    if (!confirm('Видалити книгу?')) return;
+    const ok = await confirmModal(t('confirm.delete_book', 'Видалити книгу?'));
+    if (!ok) return;
     const r = await apiFetch(`${API}/${id}`, { method: 'DELETE' });
     if (r.status === 204) {
       BOOKS = BOOKS.filter(x => String(x.id) !== String(id));

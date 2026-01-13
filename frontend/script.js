@@ -691,6 +691,7 @@ document.addEventListener('click', async (e) => {
     document.getElementById('addStatus').value = book.status || 'PLANUYU';
     document.getElementById('addIsbn').value = book.isbn || '';
     document.getElementById('addCover').value = book.cover_url || '';
+    document.getElementById('addDescription').value = book.description || '';
     document.getElementById('addModal').dataset.editId = id;
     document.querySelector('#addForm .primary').textContent = 'Зберегти';
     openAdd();
@@ -774,7 +775,8 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
     kilkist_storinyok: parseInt(document.getElementById('addPages').value || '0', 10),
     status: document.getElementById('addStatus').value,
     isbn: document.getElementById('addIsbn').value.trim() || undefined,
-    cover_url: document.getElementById('addCover').value.trim() || undefined
+    cover_url: document.getElementById('addCover').value.trim() || undefined,
+    description: document.getElementById('addDescription').value.trim() || undefined
   };
   try {
     if (!payload.cover_url) {

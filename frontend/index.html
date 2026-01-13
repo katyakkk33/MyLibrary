@@ -143,7 +143,7 @@
   <!-- Grid -->
   <main class="container">
     <div id="booksGrid" class="grid"></div>
-    <p id="loadingMessage" class="muted">Завантаження…</p>
+    <p id="loadingMessage" class="muted" data-i18n="books.loading">Завантаження…</p>
   </main>
 
   <!-- External search results -->
@@ -204,7 +204,7 @@
           </label>
           <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
             <button type="button" class="btn" id="addCancel" data-i18n="btn.cancel">Скасувати</button>
-            <button type="submit" class="btn primary" id="addSubmit" data-i18n="btn.add">Зберегти</button>
+            <button type="submit" class="btn primary" id="addSubmit" data-i18n="btn.add">Додати</button>
           </div>
         </form>
       </div>
@@ -217,31 +217,31 @@
     <div class="modal-card" style="grid-template-columns:1fr;">
       <button id="authClose" class="btn ghost small-x">✕</button>
       <div class="modal-content">
-        <h3>Logowanie / Rejestracja</h3>
+        <h3 data-i18n="auth.title">Logowanie / Rejestracja</h3>
 
         <div class="tabs" style="display:flex;gap:8px;margin-bottom:12px;">
-          <button id="tabLogin" class="btn small primary">Logowanie</button>
-          <button id="tabRegister" class="btn small">Rejestracja</button>
+          <button id="tabLogin" class="btn small primary" data-i18n="auth.tab_login">Logowanie</button>
+          <button id="tabRegister" class="btn small" data-i18n="auth.tab_register">Rejestracja</button>
         </div>
 
         <form id="loginForm" class="form-grid" style="grid-template-columns:1fr;margin-bottom:12px;">
-          <label>Login
+          <label><span data-i18n="auth.label.login">Login</span>
             <input type="text" id="loginLogin" required />
           </label>
-          <label>Hasło
+          <label><span data-i18n="auth.label.password">Hasło</span>
             <input type="password" id="loginPassword" required />
           </label>
-          <button class="btn primary" type="submit">Zaloguj</button>
+          <button class="btn primary" type="submit" data-i18n="auth.btn_login">Zaloguj</button>
         </form>
 
         <form id="registerForm" class="form-grid hidden" style="grid-template-columns:1fr;">
-          <label>Login
+          <label><span data-i18n="auth.label.login">Login</span>
             <input type="text" id="registerLogin" required />
           </label>
-          <label>Hasło (min. 6 znaków, litera + cyfra)
+          <label><span data-i18n="auth.label.password_rules">Hasło (min. 6 znaków, litera + cyfra)</span>
             <input type="password" id="registerPassword" required />
           </label>
-          <button class="btn" type="submit">Zarejestruj</button>
+          <button class="btn" type="submit" data-i18n="auth.btn_register">Zarejestruj</button>
         </form>
 
       </div>
@@ -255,12 +255,12 @@
     <div class="modal-card" style="grid-template-columns:1fr;">
       <button id="importClose" class="btn ghost small-x">✕</button>
       <div class="modal-content">
-        <h3>Імпорт списку</h3>
-        <p class="muted">Встав список у форматі: <code>Назва — Автор — Сторінок — [STATUS]</code>, по одному в рядок.</p>
+        <h3 data-i18n="import.title">Імпорт списку</h3>
+        <p class="muted"><span data-i18n="import.help_prefix">Встав список у форматі:</span> <code>Назва — Автор — Сторінок — [STATUS]</code>, <span data-i18n="import.help_suffix">по одному в рядок.</span></p>
         <textarea id="importText" rows="10" style="width:100%;"></textarea>
         <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px;">
-          <button class="btn" id="importCancel">Скасувати</button>
-          <button class="btn primary" id="importDo">Імпортувати</button>
+          <button class="btn" id="importCancel" data-i18n="btn.cancel">Скасувати</button>
+          <button class="btn primary" id="importDo" data-i18n="import.btn_import">Імпортувати</button>
         </div>
       </div>
     </div>

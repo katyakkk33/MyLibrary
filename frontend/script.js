@@ -51,6 +51,9 @@ const I18N = {
     "counters.read": "Прочитано:",
     "counters.plan": "Планую:",
 
+    "books.loading": "Завантаження…",
+    "books.untitled": "Без назви",
+
     "books.empty": "Порожньо. Додайте першу книгу.",
     "books.status.read": "Прочитано",
     "books.status.plan": "Планую",
@@ -73,6 +76,20 @@ const I18N = {
     "toast.book_added": "Книгу додано",
     "toast.book_add_failed": "Не вдалося додати",
 
+    "toast.logged_out": "Вийшли з системи.",
+    "toast.login_failed": "Не вдалося увійти.",
+    "toast.login_network_error": "Помилка мережі під час входу.",
+    "toast.logged_in": "Успішний вхід.",
+    "toast.register_failed": "Реєстрація не вдалася.",
+    "toast.register_network_error": "Помилка мережі під час реєстрації.",
+    "toast.registered_logged_in": "Акаунт створено і виконано вхід.",
+
+    "confirm.delete_book": "Видалити книгу?",
+    "err.save_failed": "Помилка збереження",
+    "err.online_not_found": "Не вдалося знайти книгу онлайн",
+    "err.import_failed": "Помилка імпорту",
+    "prompt.quick_add": "Введіть назву книги (і, за бажанням, автора через тире):",
+
     "btn.cancel": "Скасувати",
     "btn.add": "Додати",
     "btn.save": "Зберегти",
@@ -94,6 +111,15 @@ const I18N = {
 
     "auth.login_required": "Щоб побачити свою бібліотеку, спочатку увійдіть.",
 
+    "auth.title": "Вхід / Реєстрація",
+    "auth.tab_login": "Вхід",
+    "auth.tab_register": "Реєстрація",
+    "auth.label.login": "Логін",
+    "auth.label.password": "Пароль",
+    "auth.label.password_rules": "Пароль (мін. 6 символів, літера + цифра)",
+    "auth.btn_login": "Увійти",
+    "auth.btn_register": "Зареєструватися",
+
     "authors.title": "Автори",
     "authors.subtitle": "Список унікальних авторів та кількість книжок у твоїй бібліотеці.",
     "authors.empty": "Ще немає жодної книги, щоб показати авторів.",
@@ -104,6 +130,15 @@ const I18N = {
 
     "ext.results_title": "Результати пошуку у відкритих базах",
     "ext.back_to_library": "Повернутись до своєї бібліотеки",
+
+    "import.title": "Імпорт списку",
+    "import.help_prefix": "Встав список у форматі:",
+    "import.help_suffix": "по одному в рядок.",
+    "import.btn_import": "Імпортувати",
+
+    "enrich.title": "Збагачення",
+    "enrich.nothing_to_do": "Усі книги вже з обкладинками.",
+    "enrich.done": "Збагачення виконано",
 
   },
   pl: {
@@ -135,6 +170,9 @@ const I18N = {
     "counters.read": "Przeczytane:",
     "counters.plan": "Planuję:",
 
+    "books.loading": "Ładowanie…",
+    "books.untitled": "Bez tytułu",
+
     "books.empty": "Brak książek. Dodaj pierwszą pozycję.",
     "books.status.read": "Przeczytane",
     "books.status.plan": "Planuję",
@@ -157,6 +195,20 @@ const I18N = {
     "toast.book_added": "Książka dodana",
     "toast.book_add_failed": "Nie udało się dodać",
 
+    "toast.logged_out": "Wylogowano.",
+    "toast.login_failed": "Nie udało się zalogować.",
+    "toast.login_network_error": "Błąd sieci podczas logowania.",
+    "toast.logged_in": "Zalogowano.",
+    "toast.register_failed": "Rejestracja nie powiodła się.",
+    "toast.register_network_error": "Błąd sieci podczas rejestracji.",
+    "toast.registered_logged_in": "Konto utworzone i zalogowano.",
+
+    "confirm.delete_book": "Usunąć książkę?",
+    "err.save_failed": "Błąd zapisu",
+    "err.online_not_found": "Nie udało się znaleźć książki online",
+    "err.import_failed": "Błąd importu",
+    "prompt.quick_add": "Podaj tytuł książki (opcjonalnie autor po myślniku):",
+
     "btn.cancel": "Anuluj",
     "btn.add": "Dodaj",
     "btn.save": "Zapisz",
@@ -178,6 +230,15 @@ const I18N = {
 
     "auth.login_required": "Aby zobaczyć swoją bibliotekę, najpierw się zaloguj.",
 
+    "auth.title": "Logowanie / Rejestracja",
+    "auth.tab_login": "Logowanie",
+    "auth.tab_register": "Rejestracja",
+    "auth.label.login": "Login",
+    "auth.label.password": "Hasło",
+    "auth.label.password_rules": "Hasło (min. 6 znaków, litera + cyfra)",
+    "auth.btn_login": "Zaloguj",
+    "auth.btn_register": "Zarejestruj",
+
     "authors.title": "Autorzy",
     "authors.subtitle": "Lista unikalnych autorów i liczba książek w Twojej bibliotece.",
     "authors.empty": "Nie ma jeszcze żadnej książki, aby wyświetlić autorów.",
@@ -188,6 +249,15 @@ const I18N = {
 
    "ext.results_title": "Wyniki wyszukiwania w otwartych bazach",
     "ext.back_to_library": "Wróć do swojej biblioteki"
+
+    ,"import.title": "Import listy"
+    ,"import.help_prefix": "Wklej listę w formacie:"
+    ,"import.help_suffix": "po jednej pozycji na linię."
+    ,"import.btn_import": "Importuj"
+
+    ,"enrich.title": "Wzbogacanie"
+    ,"enrich.nothing_to_do": "Wszystkie książki mają już okładki."
+    ,"enrich.done": "Wzbogacanie zakończone"
 
   }
 };
@@ -589,7 +659,7 @@ document.addEventListener('DOMContentLoaded', () => {
       updateAuthUI();
       BOOKS = [];
       applyFilters();
-      toast('Wylogowano.', 'ok');
+      toast(t('toast.logged_out', 'Wylogowano.'), 'ok');
     });
   }
 
@@ -624,17 +694,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await r.json().catch(() => ({}));
         if (!r.ok) {
-          toast(data.error || 'Nie udało się zalogować.', 'error');
+          toast(data.error || t('toast.login_failed', 'Nie udało się zalogować.'), 'error');
           return;
         }
         setToken(data.token);
         setUser(data.user);
         updateAuthUI();
         closeAuthModal();
-        toast('Zalogowano.', 'ok');
+        toast(t('toast.logged_in', 'Zalogowano.'), 'ok');
         load();
       } catch {
-        toast('Błąd sieci podczas logowania.', 'error');
+        toast(t('toast.login_network_error', 'Błąd sieci podczas logowania.'), 'error');
       }
     });
   }
@@ -652,17 +722,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
         const data = await r.json().catch(() => ({}));
         if (!r.ok) {
-          toast(data.error || 'Rejestracja nie powiodła się.', 'error');
+          toast(data.error || t('toast.register_failed', 'Rejestracja nie powiodła się.'), 'error');
           return;
         }
         setToken(data.token);
         setUser(data.user);
         updateAuthUI();
         closeAuthModal();
-        toast('Konto utworzone i zalogowano.', 'ok');
+        toast(t('toast.registered_logged_in', 'Konto utworzone i zalogowano.'), 'ok');
         load();
       } catch {
-        toast('Błąd sieci podczas rejestracji.', 'error');
+        toast(t('toast.register_network_error', 'Błąd sieci podczas rejestracji.'), 'error');
       }
     });
   }
@@ -674,7 +744,7 @@ document.addEventListener('DOMContentLoaded', () => {
 function openModal(book) {
   const cover = coverFromBook(book) || genCoverSVG(book.tytul, book.autor);
   document.getElementById('modalCover').style.backgroundImage = `url('${esc(cover)}')`;
-  document.getElementById('modalTitle').textContent = book.tytul || 'Без назви';
+  document.getElementById('modalTitle').textContent = book.tytul || t('books.untitled', 'Без назви');
   document.getElementById('modalAuthor').textContent = book.autor || '';
   document.getElementById('modalMeta').textContent =
     `${t('books.pages_label', 'Сторінок')}: ${book.kilkist_storinyok || 0}${book.isbn ? ` • ISBN: ${book.isbn}` : ''}`;
@@ -710,7 +780,7 @@ document.addEventListener('click', async (e) => {
 
   // Опис
   if (btn.classList.contains('menu-open')) {
-    const id = btn.dataset.id;
+    if (!confirm(t('confirm.delete_book', 'Видалити книгу?'))) return;
     const r = await apiFetch(`${API}/${id}`);
     const book = await r.json();
     openModal(book);
@@ -837,7 +907,7 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
   } else {
     r = await apiFetch(API, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
   }
-  if (r.ok) { closeAdd(); await load(); } else { alert('Помилка збереження'); }
+  if (r.ok) { closeAdd(); await load(); } else { alert(t('err.save_failed', 'Помилка збереження')); }
 });
 
 // =================== Import modal ========================
@@ -853,7 +923,7 @@ document.getElementById('importClose')?.addEventListener('click', closeImport);
 document.getElementById('importCancel')?.addEventListener('click', closeImport);
 
 document.getElementById('importBtn')?.addEventListener('click', async () => {
-  const q = prompt('Введіть назву книги (і, за бажанням, автора через тире):');
+  const q = prompt(t('prompt.quick_add', 'Введіть назву книги (і, за бажанням, автора через тире):'));
   if (!q) return;
   const p = q.split('—').map(x => x.trim());
   // Spróbuj po stronie serwera fetch-list
@@ -886,7 +956,7 @@ document.getElementById('importBtn')?.addEventListener('click', async () => {
       return;
     }
   } catch {}
-  alert('Не вдалося знайти книгу онлайн');
+  alert(t('err.online_not_found', 'Не вдалося знайти книгу онлайн'));
 });
 
 document.getElementById('importDo')?.addEventListener('click', async () => {
@@ -908,7 +978,7 @@ document.getElementById('importDo')?.addEventListener('click', async () => {
     });
     closeImport();
     await load();
-  } catch { alert('Помилка імпорту'); }
+  } catch { alert(t('err.import_failed', 'Помилка імпорту')); }
 });
 
 // =========== Пошук обкладинки через наш бекенд ==========
@@ -936,7 +1006,7 @@ function enrichShow(total) {
     background:rgba(17,24,39,.96); color:#fff;
     box-shadow:0 10px 26px rgba(0,0,0,.35); font:14px system-ui;`;
   enrichUI.innerHTML = `
-    <div style="font-weight:700; margin-bottom:6px;">Збагачення</div>
+    <div style="font-weight:700; margin-bottom:6px;">${t('enrich.title', 'Збагачення')}</div>
     <div id="enrichText" style="opacity:.9; margin-bottom:8px;">0 / ${total}</div>
     <div style="height:8px; background:rgba(255,255,255,.15); border-radius:999px; overflow:hidden;">
       <div id="enrichBar" style="height:100%; width:0%; background:#7c3aed;"></div>
@@ -954,7 +1024,7 @@ function enrichHide() { enrichUI?.remove(); enrichUI = null; }
 
 document.getElementById('enrichBtn')?.addEventListener('click', async () => {
   const targets = BOOKS.filter(b => !b.cover_url);
-  if (!targets.length) { toast('Все вже з обкладинками 🙂', 'ok'); return; }
+  if (!targets.length) { toast(t('enrich.nothing_to_do', 'Усі книги вже з обкладинками.'), 'ok'); return; }
 
   const btn = document.getElementById('enrichBtn');
   btn.disabled = true;
@@ -993,7 +1063,7 @@ document.getElementById('enrichBtn')?.addEventListener('click', async () => {
 
   enrichHide();
   btn.disabled = false;
-  toast('Збагачення виконано', 'ok');
+  toast(t('enrich.done', 'Збагачення виконано'), 'ok');
 });
 
 // ============= Дрібні UI-покращення ======================

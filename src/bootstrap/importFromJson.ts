@@ -12,7 +12,8 @@ type JsonBook = {
   status?: 'PROCHYTANA' | 'PLANUYU';
   isbn?: string | null;
   cover_url?: string | null;
-  description?: string | null;
+  description?: string | null; // legacy
+  opis_67664?: string | null;
 };
 
 function tryLoadJsonCandidates(): { file: string, items: JsonBook[] } | null {
@@ -81,7 +82,7 @@ export function importFromJsonIfNeeded() {
         : 200; 
 
      run(
-      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description)
+      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, opis_67664)
        VALUES (?, ?, ?, ?, COALESCE(?, datetime('now')), ?, ?, ?)`,
       [
         t,
@@ -91,7 +92,7 @@ export function importFromJsonIfNeeded() {
         b.data_dodania ?? null,
         b.isbn ?? null,
         b.cover_url ?? null,
-        b.description ?? null
+        (b.opis_67664 ?? b.description) ?? null
       ]
     );
     created++;

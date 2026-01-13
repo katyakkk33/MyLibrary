@@ -106,15 +106,15 @@ export function migrateLegacyIfNeeded() {
     const status = normalizeStatus(r.c3);
     const isbn = r.c4 ? String(r.c4) : null;
     const cover_url = r.c5 ? String(r.c5) : null;
-    const description = r.c6 ? String(r.c6) : null;
+    const opis_67664 = r.c6 ? String(r.c6) : null;
 
     const exists = get('SELECT id FROM books WHERE tytul=? AND autor=?', [tytul, autor]);
     if (exists) continue;
 
     run(
-      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description)
+      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, opis_67664)
        VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?)`,
-      [tytul, autor, pages, status, isbn, cover_url, description]
+      [tytul, autor, pages, status, isbn, cover_url, opis_67664]
     );
     imported++;
   }

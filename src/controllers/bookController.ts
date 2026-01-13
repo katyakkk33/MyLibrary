@@ -13,7 +13,7 @@ const rowToBook = (r: any): Book => ({
   data_dodania: r.data_dodania,
   isbn: r.isbn ?? null,
   cover_url: r.cover_url ?? null,
-  description: r.description ?? null,
+  opis_67664: (r.opis_67664 ?? r.description) ?? null,
   user_id: r.user_id ?? undefined
 });
 
@@ -73,10 +73,10 @@ export function createBook(req: Request, res: Response) {
 
   try {
     const result = run(
-      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, description, user_id)
+      `INSERT INTO books (tytul, autor, kilkist_storinyok, status, data_dodania, isbn, cover_url, opis_67664, user_id)
        VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?, ?)`,
       [payload.tytul, payload.autor, payload.kilkist_storinyok, payload.status,
-       payload.isbn ?? null, payload.cover_url ?? null, payload.description ?? null, userId]
+       payload.isbn ?? null, payload.cover_url ?? null, payload.opis_67664 ?? null, userId]
     );
     const row = get<Book>('SELECT * FROM books WHERE id=?', [result.lastInsertRowid]);
     res.status(201).json(rowToBook(row));
@@ -105,7 +105,7 @@ export function updateBook(req: Request, res: Response) {
   try {
     run(
       `UPDATE books
-       SET tytul=?, autor=?, kilkist_storinyok=?, status=?, isbn=?, cover_url=?, description=?
+       SET tytul=?, autor=?, kilkist_storinyok=?, status=?, isbn=?, cover_url=?, opis_67664=?
        WHERE id=? AND user_id=?`,
       [
         payload.tytul,
@@ -114,7 +114,7 @@ export function updateBook(req: Request, res: Response) {
         payload.status,
         payload.isbn ?? null,
         payload.cover_url ?? null,
-        payload.description ?? null,
+        payload.opis_67664 ?? null,
         id,
         userId
       ]
@@ -167,7 +167,7 @@ export function bulkCreate(req: Request, res: Response) {
       run(
         `INSERT INTO books (
            tytul, autor, kilkist_storinyok, status, data_dodania, 
-           isbn, cover_url, description, user_id
+           isbn, cover_url, opis_67664, user_id
          )
          VALUES (?, ?, ?, ?, datetime('now'), ?, ?, ?, ?)`,
         [
@@ -177,7 +177,7 @@ export function bulkCreate(req: Request, res: Response) {
           payload.status,
           payload.isbn ?? null, 
           payload.cover_url ?? null, 
-          payload.description ?? null, 
+          payload.opis_67664 ?? null, 
           userId // Додаємо ID користувача
         ]
       );
@@ -195,7 +195,7 @@ export function bulkCreate(req: Request, res: Response) {
   res.json(results);
 }
 
-// Enrich missing covers/ISBN/description via Open Library
+// Enrich missing covers/ISBN/opis_67664 via Open Library
 async function fetchOpenLibraryMeta(title: string, author: string) {
   try {
     const q = encodeURIComponent(`${title} ${author}`.trim());
@@ -211,8 +211,8 @@ async function fetchOpenLibraryMeta(title: string, author: string) {
     } else if (isbn) {
       cover_url = `https://covers.openlibrary.org/b/isbn/${isbn}-L.jpg`;
     }
-    const description = (typeof doc.first_sentence === 'string') ? doc.first_sentence : undefined;
-    return { isbn, cover_url, description };
+    const opis_67664 = (typeof doc.first_sentence === 'string') ? doc.first_sentence : undefined;
+    return { isbn, cover_url, opis_67664 };
   } catch {
     return null;
   }
@@ -232,9 +232,9 @@ export async function enrichBooks(req: Request, res: Response) {
       autor: string | null;
       isbn: string | null;
       cover_url: string | null;
-      description: string | null;
+      opis_67664: string | null;
     }>(
-      `SELECT id, tytul, autor, isbn, cover_url, description
+      `SELECT id, tytul, autor, isbn, cover_url, opis_67664
        FROM books
        WHERE user_id = ?`,
       [userId]
@@ -276,7 +276,7 @@ export async function enrichBooks(req: Request, res: Response) {
       } catch {}
       return null;
     }
-    async function findDescription(title: string, author: string) {
+    async function findOpis(title: string, author: string) {
       try {
         const r = await fetch(
           `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}${author ? `&author=${encodeURIComponent(author)}` : ''}&limit=1`
@@ -300,7 +300,7 @@ export async function enrichBooks(req: Request, res: Response) {
 
     for (const b of rows) {
       const needCover = !b.cover_url || b.cover_url.trim() === '';
-      const needDesc  = !b.description || b.description.trim() === '';
+      const needDesc  = !b.opis_67664 || b.opis_67664.trim() === '';
 
       if (!needCover && !needDesc) continue;
 
@@ -316,14 +316,14 @@ export async function enrichBooks(req: Request, res: Response) {
         }
       }
       if (needDesc) {
-        newDesc = await findDescription(b.tytul, b.autor || '');
+        newDesc = await findOpis(b.tytul, b.autor || '');
       }
 
       if (newCover || newDesc) {
         run(
           `UPDATE books
              SET cover_url = COALESCE(?, cover_url),
-                 description = COALESCE(?, description)
+                 opis_67664 = COALESCE(?, opis_67664)
            WHERE id = ?`,
           [newCover ?? null, newDesc ?? null, b.id]
         );

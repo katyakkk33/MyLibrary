@@ -10,6 +10,7 @@ export function normalizeBookPayload(body: any): NewBook {
   const statusRaw = normalize(body.status).toUpperCase();
   const status = statusRaw === 'PROCHYTANA' ? 'PROCHYTANA' : 'PLANUYU';
   const pages = toInt(body.kilkist_storinyok);
+  const rawOpis = body?.opis_67664 ?? body?.description;
 
   return {
     tytul: normalize(body.tytul),
@@ -18,7 +19,7 @@ export function normalizeBookPayload(body: any): NewBook {
     status,
     isbn: body.isbn ? normalize(body.isbn) : undefined,
     cover_url: body.cover_url ? normalize(body.cover_url) : undefined,
-    description: body.description ? normalize(body.description) : undefined,
+    opis_67664: rawOpis ? normalize(rawOpis) : undefined,
   };
 }
 

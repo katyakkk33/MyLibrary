@@ -7,7 +7,7 @@ export interface Book {
   data_dodania?: string;      // ISO
   isbn?: string | null;
   cover_url?: string | null;
-  description?: string | null;
+  opis_67664?: string | null;
   user_id?: number;           // власник книги
 }
 

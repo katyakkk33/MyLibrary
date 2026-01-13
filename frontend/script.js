@@ -640,7 +640,7 @@ function openModal(book) {
   document.getElementById('modalAuthor').textContent = book.autor || '';
   document.getElementById('modalMeta').textContent =
     `Сторінок: ${book.kilkist_storinyok || 0}${book.isbn ? ` • ISBN: ${book.isbn}` : ''}`;
-  document.getElementById('modalDesc').innerHTML = esc(book.description || 'Опис відсутній.');
+  document.getElementById('modalDesc').innerHTML = esc((book.opis_67664 || book.description) || 'Опис відсутній.');
   document.getElementById('modalBackdrop').classList.remove('hidden');
   document.getElementById('bookModal').classList.remove('hidden');
 }
@@ -691,7 +691,7 @@ document.addEventListener('click', async (e) => {
     document.getElementById('addStatus').value = book.status || 'PLANUYU';
     document.getElementById('addIsbn').value = book.isbn || '';
     document.getElementById('addCover').value = book.cover_url || '';
-    document.getElementById('addDescription').value = book.description || '';
+    document.getElementById('addOpis_67664').value = (book.opis_67664 || book.description) || '';
     document.getElementById('addModal').dataset.editId = id;
     document.querySelector('#addForm .primary').textContent = 'Зберегти';
     openAdd();
@@ -776,7 +776,7 @@ document.getElementById('addForm')?.addEventListener('submit', async (e) => {
     status: document.getElementById('addStatus').value,
     isbn: document.getElementById('addIsbn').value.trim() || undefined,
     cover_url: document.getElementById('addCover').value.trim() || undefined,
-    description: document.getElementById('addDescription').value.trim() || undefined
+    opis_67664: document.getElementById('addOpis_67664').value.trim() || undefined
   };
   try {
     if (!payload.cover_url) {
@@ -833,7 +833,7 @@ document.getElementById('importBtn')?.addEventListener('click', async () => {
           status: 'PLANUYU',
           isbn: it.isbn || undefined,
           cover_url: it.cover || undefined,
-          description: it.description || undefined
+          opis_67664: it.description || undefined
         })
       });
       await load();
@@ -1236,7 +1236,7 @@ async function extSearch() {
             status: 'PLANUYU',
             isbn: it.isbn,
             cover_url: it.cover,
-            description: it.description
+            opis_67664: it.description
           })
         });
         toast(t('toast.book_added', 'Книгу додано'), 'ok');
